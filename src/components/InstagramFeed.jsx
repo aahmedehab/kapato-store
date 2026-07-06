@@ -12,7 +12,7 @@ const InstagramFeed = () => {
             className="aspect-square overflow-hidden rounded-xl"
           >
             <img
-              src={`/src/assets/ig${i + 1}.jpg`}
+              src={`/images/ig${i + 1}.jpg`}
               alt=""
               className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
             />
@@ -24,3 +24,5 @@ const InstagramFeed = () => {
 };
 
 export default InstagramFeed;
+
+

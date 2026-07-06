@@ -1,8 +1,8 @@
 const caps = [
-  { color: 'red', name: 'Classic Red', img: '/src/assets/caps/red.png' },
-  { color: 'beige', name: 'Natural', img: '/src/assets/caps/beige.png' },
-  { color: 'blue', name: 'Ocean Blue', img: '/src/assets/caps/blue.png' },
-  { color: 'green', name: 'Forest Green', img: '/src/assets/caps/green.png' },
+  { color: 'red', name: 'Classic Red', img: '/images/red.png' },
+  { color: 'beige', name: 'Natural', img: '/images/beige.png' },
+  { color: 'blue', name: 'Ocean Blue', img: '/images/blue.png' },
+  { color: 'green', name: 'Forest Green', img: '/images/green.png' },
 ];
 
 const FeaturedCollection = () => {
