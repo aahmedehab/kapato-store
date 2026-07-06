@@ -297,9 +297,9 @@ const ProductDetail = () => {
                 {formatPrice(subtotal)}
               </span>
             </div>
-            <p className="text-[11px] sm:text-xs text-gray-400 pt-1">
+            {/* <p className="text-[11px] sm:text-xs text-gray-400 pt-1">
               * Printing cost will be added on customization
-            </p>
+            </p> */}
           </div>
 
           <div className="flex flex-col sm:flex-row gap-3">
@@ -310,12 +310,12 @@ const ProductDetail = () => {
             >
               Add to Cart
             </button>
-            <button
+            {/* <button
               type="button"
               className="flex-1 bg-gray-800 text-white py-3.5 rounded-xl text-sm sm:text-base font-semibold hover:bg-gray-900 transition"
             >
               Customize
-            </button>
+            </button> */}
           </div>
 
           <div className="border border-yellow-300 bg-yellow-50 rounded-xl px-4 sm:px-5 py-3.5 sm:py-4 flex items-start gap-3">
