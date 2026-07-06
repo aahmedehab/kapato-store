@@ -37,14 +37,14 @@ const TAB_CONTENT = {
 // ];
 
 const COLOR_VARIANTS = [
-  { color: '#F9A8D4', sku: 'WSHD-CAP-PALE PINK', img: '/src/assets/caps/pink.png' },
-  { color: '#1F2937', sku: 'WSHD-CAP-BLACK', img: '/src/assets/caps/black.png' },
-  { color: '#7F1D1D', sku: 'WSHD-CAP-MAROON', img: '/src/assets/caps/maroon.png' },
-  { color: '#1E3A8A', sku: 'WSHD-CAP-NAVY', img: '/src/assets/caps/navy.png' },
-  { color: '#374151', sku: 'WSHD-CAP-CHARCOAL', img: '/src/assets/caps/charcoal.png' },
-  { color: '#4B5563', sku: 'WSHD-CAP-GRAY', img: '/src/assets/caps/gray.png' },
-  { color: '#FDE047', sku: 'WSHD-CAP-YELLOW', img: '/src/assets/caps/yellow.png' },
-  { color: '#6B21A8', sku: 'WSHD-CAP-PURPLE', img: '/src/assets/caps/purple.png' },
+  { color: '#F9A8D4', sku: 'WSHD-CAP-PALE PINK', img: '/images/pink.png' },
+  { color: '#1F2937', sku: 'WSHD-CAP-BLACK', img: '/images/black.png' },
+  { color: '#7F1D1D', sku: 'WSHD-CAP-MAROON', img: '/images/maroon.png' },
+  { color: '#1E3A8A', sku: 'WSHD-CAP-NAVY', img: '/images/navy.png' },
+  { color: '#374151', sku: 'WSHD-CAP-CHARCOAL', img: '/images/charcoal.png' },
+  { color: '#4B5563', sku: 'WSHD-CAP-GRAY', img: '/images/gray.png' },
+  { color: '#FDE047', sku: 'WSHD-CAP-YELLOW', img: '/images/yellow.png' },
+  { color: '#6B21A8', sku: 'WSHD-CAP-PURPLE', img: '/images/purple.png' },
 ];
 
 const formatPrice = (amount) => `EGP${amount.toFixed(2)}`;

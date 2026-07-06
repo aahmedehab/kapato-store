@@ -2,7 +2,7 @@ const Hero = () => {
   return (
     <div className="relative h-[580px] flex items-center justify-center overflow-hidden ">
       <img 
-        src="/src/assets/hero.jpg" 
+        src="/images/hero.jpg" 
         alt="Beach lifestyle" 
         className="absolute inset-0 w-full h-full object-cover"
       />
