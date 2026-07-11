@@ -89,7 +89,9 @@ fetch(`${API_URL}/api/products`)
                     <div>
                       <p className="font-bold text-xl">EGP {product.price}</p>
                     </div>
-                    <p className="text-xs text-gray-500">4 colors</p>
+<p className="text-xs text-gray-500">
+  {product.colors_count} {product.colors_count == 1 ? "color" : "colors"}
+</p>
                   </div>
                 </div>
               </div>
