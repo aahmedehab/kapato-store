@@ -1,9 +1,10 @@
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from "react-router-dom";
 import { useCart } from '../../context/CartContext';
-import { useState } from 'react';
+import { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight, Copy, Crown, Minus, Plus } from 'lucide-react';
 import { PRODUCT_DESCRIPTIONS } from "../../data/constants";
 
+const API_URL = import.meta.env.VITE_API_URL;
 
 const TABS = [
   'Description',
@@ -36,35 +37,65 @@ const TAB_CONTENT = {
 //   },
 // ];
 
-const COLOR_VARIANTS = [
-  { color: '#F9A8D4', sku: 'WSHD-CAP-PALE PINK', img: '/images/pink.png' },
-  { color: '#1F2937', sku: 'WSHD-CAP-BLACK', img: '/images/black.png' },
-  { color: '#7F1D1D', sku: 'WSHD-CAP-MAROON', img: '/images/maroon.png' },
-  { color: '#1E3A8A', sku: 'WSHD-CAP-NAVY', img: '/images/navy.png' },
-  { color: '#374151', sku: 'WSHD-CAP-CHARCOAL', img: '/images/charcoal.png' },
-  { color: '#4B5563', sku: 'WSHD-CAP-GRAY', img: '/images/gray.png' },
-  { color: '#FDE047', sku: 'WSHD-CAP-YELLOW', img: '/images/yellow.png' },
-  { color: '#6B21A8', sku: 'WSHD-CAP-PURPLE', img: '/images/purple.png' },
-];
+// const variants = [
+//   { color: '#F9A8D4', sku: 'WSHD-CAP-PALE PINK', img: '/images/pink.png' },
+//   { color: '#1F2937', sku: 'WSHD-CAP-BLACK', img: '/images/black.png' },
+//   { color: '#7F1D1D', sku: 'WSHD-CAP-MAROON', img: '/images/maroon.png' },
+//   { color: '#1E3A8A', sku: 'WSHD-CAP-NAVY', img: '/images/navy.png' },
+//   { color: '#374151', sku: 'WSHD-CAP-CHARCOAL', img: '/images/charcoal.png' },
+//   { color: '#4B5563', sku: 'WSHD-CAP-GRAY', img: '/images/gray.png' },
+//   { color: '#FDE047', sku: 'WSHD-CAP-YELLOW', img: '/images/yellow.png' },
+//   { color: '#6B21A8', sku: 'WSHD-CAP-PURPLE', img: '/images/purple.png' },
+// ];
 
-const formatPrice = (amount) => `EGP${amount.toFixed(2)}`;
+const formatPrice = (amount) => `EGP ${amount.toFixed(2)}`;
 
 const ProductDetail = () => {
   const { id } = useParams();
   const { addToCart } = useCart();
+  const navigate = useNavigate();
   const [quantity, setQuantity] = useState(1);
   const [selectedColorIndex, setSelectedColorIndex] = useState(0);
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [activeTab, setActiveTab] = useState('Description');
   const [copied, setCopied] = useState(false);
 
-  const product = {
-    id: parseInt(id, 10),
-    name: 'Washed Cap',
-    price: 195,
+const [product, setProduct] = useState(null);
+const [variants, setVariants] = useState([]);
+const [loading, setLoading] = useState(true);
+
+useEffect(() => {
+  const fetchProduct = async () => {
+    try {
+      const res = await fetch(`${API_URL}/api/products/${id}`);
+
+      if (!res.ok) {
+        throw new Error("Failed to fetch product");
+      }
+
+      const data = await res.json();
+
+      setProduct({
+        ...data.product,
+        price: Number(data.product.price),
+      });
+
+      setVariants(data.variants);
+
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const selectedVariant = COLOR_VARIANTS[selectedColorIndex];
+  fetchProduct();
+}, [id]);
+
+  if (loading) return <div className="text-center py-20 text-xl">Loading product...</div>;
+  if (!product) return <div>Product not found</div>;
+
+  const selectedVariant = variants[selectedColorIndex];
   const subtotal = product.price * quantity;
 
   const handleCopySku = async () => {
@@ -79,13 +110,13 @@ const ProductDetail = () => {
 
   const handlePrevImage = () => {
     setSelectedImageIndex((prev) =>
-      prev === 0 ? COLOR_VARIANTS.length - 1 : prev - 1
+      prev === 0 ? variants.length - 1 : prev - 1
     );
   };
 
   const handleNextImage = () => {
     setSelectedImageIndex((prev) =>
-      prev === COLOR_VARIANTS.length - 1 ? 0 : prev + 1
+      prev === variants.length - 1 ? 0 : prev + 1
     );
   };
 
@@ -101,6 +132,24 @@ const ProductDetail = () => {
     });
   };
 
+const handleBuyNow = () => {
+  addToCart({
+    id: product.id,
+    name: product.name,
+    price: product.price,
+    sku: selectedVariant.sku,
+    img: selectedVariant.img,
+    color: selectedVariant.color,
+    quantity,
+  });
+
+  navigate("/cart");
+};
+
+if (!product) {
+  return <div>Loading...</div>;
+}
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-10 lg:py-12 bg-white">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 lg:gap-16">
@@ -108,7 +157,7 @@ const ProductDetail = () => {
         <div className="space-y-4 sm:space-y-5">
           <div className="bg-[#F3F4F6] rounded-xl sm:rounded-2xl overflow-hidden relative aspect-square flex items-center justify-center">
             <img
-              src={COLOR_VARIANTS[selectedImageIndex].img}
+              src={`/images/${selectedVariant?.image}`}
               alt={product.name}
               className="w-full h-full object-cover"
             />
@@ -131,7 +180,7 @@ const ProductDetail = () => {
           </div>
 
           <div className="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1">
-            {COLOR_VARIANTS.map((variant, i) => (
+            {variants.map((variant, i) => (
               <button
                 key={variant.sku}
                 type="button"
@@ -146,7 +195,7 @@ const ProductDetail = () => {
                 }`}
               >
                 <img
-                  src={variant.img}
+                  src={`/images/${variant.image}`}
                   alt=""
                   className="w-full h-full object-contain p-1"
                 />
@@ -205,7 +254,7 @@ const ProductDetail = () => {
           <div>
             <p className="font-semibold text-gray-900 mb-3">Color</p>
             <div className="flex gap-2.5 flex-wrap">
-              {COLOR_VARIANTS.map((variant, i) => (
+              {variants.map((variant, i) => (
                 <button
                   key={variant.sku}
                   type="button"
@@ -218,7 +267,7 @@ const ProductDetail = () => {
                       ? 'border-blue-600 ring-1 ring-blue-600'
                       : 'border-gray-200'
                   }`}
-                  style={{ backgroundColor: variant.color }}
+                  style={{ backgroundColor: variant.hex_code }}
                   aria-label={`Select color ${variant.sku}`}
                 />
               ))}
@@ -310,12 +359,13 @@ const ProductDetail = () => {
             >
               Add to Cart
             </button>
-            {/* <button
+            <button
               type="button"
               className="flex-1 bg-gray-800 text-white py-3.5 rounded-xl text-sm sm:text-base font-semibold hover:bg-gray-900 transition"
+              onClick={handleBuyNow}
             >
-              Customize
-            </button> */}
+              Buy it Now
+            </button>
           </div>
 
           <div className="border border-yellow-300 bg-yellow-50 rounded-xl px-4 sm:px-5 py-3.5 sm:py-4 flex items-start gap-3">

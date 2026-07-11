@@ -53,14 +53,14 @@ fetch(`${API_URL}/api/products`)
         <Search className="absolute left-5 top-3.5 text-gray-400" size={20} />   {/* ← غيرتها */}
       </div>
 
-      <div>
+      {/* <div>
         <select className="border border-gray-300 rounded-2xl py-3 px-6 text-sm focus:outline-none">
           <option>All Categories</option>
           <option>Caps</option>
           <option>T-Shirts</option>
           <option>Accessories</option>
         </select>
-      </div>
+      </div> */}
     </div>
   </div>
 </div>
