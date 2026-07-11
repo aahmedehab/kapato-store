@@ -32,8 +32,8 @@ const Checkout = () => {
     e.preventDefault();
     setLoading(true);
 
-    const orderDetails = cart.map(item => 
-      `${item.name} (${item.color}) x${item.quantity} = LE ${item.price * item.quantity}`
+    const orderDetails = cart.map(item =>
+      `${item.name} (${item.color} - ${item.sku}) x${item.quantity} = LE ${item.price * item.quantity}`
     ).join("\n");
 
     const templateParams = {
@@ -151,8 +151,8 @@ await Promise.all([
           <div className="bg-gray-100 p-8 rounded-3xl h-fit sticky top-8">
             <h2 className="font-semibold text-lg mb-6">Order Summary</h2>
 
-            {cart.map((item, index) => (
-              <div key={index} className="flex gap-4 py-4 border-b last:border-none">
+            {cart.map((item) => (
+              <div key={item.sku} className="flex gap-4 py-4 border-b last:border-none">
                 <div className="w-14 h-14 bg-white rounded-lg overflow-hidden border flex-shrink-0">
                   <img src={item.img} alt={item.name} className="w-full h-full object-cover" />
                 </div>

@@ -7,20 +7,23 @@ export const CartProvider = ({ children }) => {
 
   const addToCart = (product) => {
     setCart(prevCart => {
-      const existingItem = prevCart.findIndex(item => item.id === product.id);
+      const existingIndex = prevCart.findIndex(
+        (item) => item.sku === product.sku
+      );
 
-      if (existingItem !== -1) {
-        // لو موجود → زود الكمية اللي جاية
+      if (existingIndex !== -1) {
         const updatedCart = [...prevCart];
-        updatedCart[existingItem].quantity += product.quantity || 1;
+        updatedCart[existingIndex].quantity += product.quantity || 1;
         return updatedCart;
-      } else {
-        // لو جديد → أضفه بالكمية
-        return [...prevCart, { 
-          ...product, 
-          quantity: product.quantity || 1 
-        }];
       }
+
+      return [
+        ...prevCart,
+        {
+          ...product,
+          quantity: product.quantity || 1,
+        },
+      ];
     });
   };
 

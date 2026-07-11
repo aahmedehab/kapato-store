@@ -45,7 +45,7 @@ const Cart = () => {
         {/* Cart Items */}
         <div className="lg:col-span-7 space-y-8">
           {cart.map((item, index) => (
-            <div key={index} className="flex gap-6 bg-white p-6 rounded-2xl border">
+            <div key={item.sku} className="flex gap-6 bg-white p-6 rounded-2xl border">
               <div className="w-28 h-28 bg-gray-100 rounded-xl overflow-hidden flex-shrink-0">
                 <img
                   src={item.img}
@@ -58,6 +58,7 @@ const Cart = () => {
                   <div>
                     <h3 className="font-medium">{item.name}</h3>
                     <p className="text-sm text-gray-500 mt-1">{item.color}</p>
+                    <p className="text-xs text-gray-400 mt-0.5 font-mono">{item.sku}</p>
                   </div>
                   <button
                     onClick={() => removeFromCart(index)}

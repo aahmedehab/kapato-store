@@ -120,35 +120,26 @@ useEffect(() => {
     );
   };
 
-  const handleAddToCart = () => {
-    addToCart({
-      id: product.id,
-      name: product.name,
-      price: product.price,
-      sku: selectedVariant.sku,
-      img: selectedVariant.img,
-      color: selectedVariant.color,
-      quantity: quantity,
-    });
-  };
-
-const handleBuyNow = () => {
-  addToCart({
+  const buildCartItem = () => ({
     id: product.id,
+    variantId: selectedVariant.id,
     name: product.name,
     price: product.price,
     sku: selectedVariant.sku,
-    img: selectedVariant.img,
-    color: selectedVariant.color,
+    img: `/images/${selectedVariant.image}`,
+    color: selectedVariant.color_name,
+    hexCode: selectedVariant.hex_code,
     quantity,
   });
 
-  navigate("/cart");
-};
+  const handleAddToCart = () => {
+    addToCart(buildCartItem());
+  };
 
-if (!product) {
-  return <div>Loading...</div>;
-}
+  const handleBuyNow = () => {
+    addToCart(buildCartItem());
+    navigate("/cart");
+  };
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-10 lg:py-12 bg-white">
@@ -350,7 +341,6 @@ if (!product) {
               * Printing cost will be added on customization
             </p> */}
           </div>
-
           <div className="flex flex-col sm:flex-row gap-3">
             <button
               type="button"
