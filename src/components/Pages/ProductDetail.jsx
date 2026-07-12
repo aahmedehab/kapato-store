@@ -75,12 +75,12 @@ useEffect(() => {
 
       const data = await res.json();
 
-      setProduct({
-        ...data.product,
-        price: Number(data.product.price),
-      });
+setProduct({
+  ...data,
+  price: Number(data.price),
+});
 
-      setVariants(data.variants);
+setVariants(data.variants);
 
     } catch (err) {
       console.error(err);
@@ -127,8 +127,8 @@ useEffect(() => {
     price: product.price,
     sku: selectedVariant.sku,
     img: `/images/${selectedVariant.image}`,
-    color: selectedVariant.color_name,
-    hexCode: selectedVariant.hex_code,
+    color: selectedVariant.color.name,
+    hexCode: selectedVariant.color.hex_code,
     quantity,
   });
 
@@ -258,7 +258,7 @@ useEffect(() => {
                       ? 'border-blue-600 ring-1 ring-blue-600'
                       : 'border-gray-200'
                   }`}
-                  style={{ backgroundColor: variant.hex_code }}
+                  style={{ backgroundColor: variant.color.hex_code }}
                   aria-label={`Select color ${variant.sku}`}
                 />
               ))}
