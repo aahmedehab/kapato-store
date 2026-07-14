@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import Marquee from "react-fast-marquee";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -13,31 +14,21 @@ const FeaturedCollection = () => {
       .catch(console.error);
   }, []);
 
-  // Duplicate products for smooth infinite loop
-  const loopProducts = [...products, ...products, ...products];
-
   return (
-<div className="w-full py-16 bg-white">
-      {/* نفس الحاوية اللي تحت عشان العناوين تتراص */}
-      <div className="max-w-7xl mx-auto px-6">
-        <h2 className="text-[#B71C1C] text-3xl font-semibold mb-10 text-left">
+    <div className="w-full py-16 bg-white overflow-hidden">
+      <div className="max-w-7xl mx-auto px-6 mb-10">
+        <h2 className="text-[#B71C1C] text-3xl font-semibold">
           Featured Collection
         </h2>
       </div>
 
-      {/* Full Width Automatic Marquee */}
-      <div className="relative w-full">
-        <div 
-          className="flex gap-8 animate-marquee whitespace-nowrap"
-          style={{
-            width: "max-content",
-          }}
-        >
-          {loopProducts.map((product, index) => (
+      <div className="relative w-full overflow-hidden">
+        <div className="flex gap-8 animate-marquee">
+          {[...products, ...products].map((product, index) => (
             <Link
               key={`${product.id}-${index}`}
-              to={`/products/${product.id}`}
-              className="group w-64 md:w-72 flex-shrink-0 block"
+              to={`/product/${product.id}`}
+              className="group w-64 md:w-72 flex-shrink-0"
             >
               <div className="aspect-square bg-gray-200 rounded-2xl overflow-hidden">
                 <img
