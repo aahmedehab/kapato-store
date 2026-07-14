@@ -1,29 +1,56 @@
-const caps = [
-  { color: 'red', name: 'Classic Red', img: '/images/red.png' },
-  { color: 'beige', name: 'Natural', img: '/images/beige.png' },
-  { color: 'blue', name: 'Ocean Blue', img: '/images/blue.png' },
-  { color: 'green', name: 'Forest Green', img: '/images/green.png' },
-];
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+
+const API_URL = import.meta.env.VITE_API_URL;
 
 const FeaturedCollection = () => {
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    fetch(`${API_URL}/api/products`)
+      .then((res) => res.json())
+      .then((data) => setProducts(data))
+      .catch(console.error);
+  }, []);
+
+  // Duplicate products for smooth infinite loop
+  const loopProducts = [...products, ...products, ...products];
+
   return (
-    <div className="max-w-7xl mx-auto px-6 py-16">
-      <h2 className="text-[#B71C1C] text-3xl font-semibold mb-10">Featured Collection</h2>
-      
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
-        {caps.map((cap) => (
-          <div key={cap.color} className="group">
-            <div className="aspect-square bg-gray-200 rounded-2xl overflow-hidden">
-              <img 
-                src={cap.img} 
-                alt={cap.name}
-                className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
-              />
-            </div>
-            <p className="text-center mt-4 font-medium">{cap.name}</p>
-            {/* <p className="text-center text-[#B71C1C] font-bold">KAPATO</p> */}
-          </div>
-        ))}
+    <div className="w-full py-16 bg-white overflow-hidden">
+      <div className="max-w-7xl mx-auto px-6 mb-10">
+        <h2 className="text-[#B71C1C] text-3xl font-semibold text-center md:text-left">
+          Featured Collection
+        </h2>
+      </div>
+
+      {/* Full Width Automatic Marquee */}
+      <div className="relative w-full">
+        <div 
+          className="flex gap-8 animate-marquee whitespace-nowrap"
+          style={{
+            width: "max-content",
+          }}
+        >
+          {loopProducts.map((product, index) => (
+            <Link
+              key={`${product.id}-${index}`}
+              to={`/product/${product.id}`}
+              className="group w-64 md:w-72 flex-shrink-0 block"
+            >
+              <div className="aspect-square bg-gray-200 rounded-2xl overflow-hidden">
+                <img
+                  src={`/images/${product.img}`}
+                  alt={product.name}
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                />
+              </div>
+              <p className="text-center mt-4 font-medium text-lg">
+                {product.name}
+              </p>
+            </Link>
+          ))}
+        </div>
       </div>
     </div>
   );

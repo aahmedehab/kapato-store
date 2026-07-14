@@ -7,13 +7,14 @@ function Home() {
   return (
     <>
       <Hero />
+      <main>
+          <FeaturedCollection />
+        <div className="max-w-7xl mx-auto px-4 md:px-6">
 
-      <main className="max-w-7xl mx-auto px-4 md:px-6">
-        <FeaturedCollection />
-
-        <div className="grid grid-cols-1 lg:grid-cols-2">
-          <SummerMoments />
-          <InstagramFeed />
+          <div className="grid grid-cols-1 lg:grid-cols-2">
+            <SummerMoments />
+            <InstagramFeed />
+          </div>
         </div>
       </main>
     </>
