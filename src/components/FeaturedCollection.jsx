@@ -17,9 +17,10 @@ const FeaturedCollection = () => {
   const loopProducts = [...products, ...products, ...products];
 
   return (
-    <div className="w-full py-16 bg-white overflow-hidden">
-      <div className="max-w-7xl mx-auto px-6 mb-10">
-        <h2 className="text-[#B71C1C] text-3xl font-semibold text-center md:text-left">
+<div className="w-full py-16 bg-white">
+      {/* نفس الحاوية اللي تحت عشان العناوين تتراص */}
+      <div className="max-w-7xl mx-auto px-6">
+        <h2 className="text-[#B71C1C] text-3xl font-semibold mb-10 text-left">
           Featured Collection
         </h2>
       </div>
@@ -35,7 +36,7 @@ const FeaturedCollection = () => {
           {loopProducts.map((product, index) => (
             <Link
               key={`${product.id}-${index}`}
-              to={`/product/${product.id}`}
+              to={`/products/${product.id}`}
               className="group w-64 md:w-72 flex-shrink-0 block"
             >
               <div className="aspect-square bg-gray-200 rounded-2xl overflow-hidden">
