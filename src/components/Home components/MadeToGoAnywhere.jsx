@@ -1,8 +1,8 @@
 const MadeToGoAnywhere = () => {
   return (
-    <div className="mx-auto">
-      {/* Main Split Section with Mobile Overlay */}
-      <div className="relative h-[520px] lg:h-[460px] grid grid-cols-1 lg:grid-cols-5 overflow-hidden">
+    <div className=" mx-auto">
+      {/* Main Section - Mobile Mix */}
+      <div className="relative h-[560px] lg:h-[460px] grid grid-cols-1 lg:grid-cols-5 overflow-hidden">
         
         {/* Background Image */}
         <div className="absolute inset-0 lg:relative lg:col-span-2">
@@ -11,40 +11,35 @@ const MadeToGoAnywhere = () => {
             alt="Palm trees" 
             className="absolute inset-0 w-full h-full object-cover"
           />
-          {/* Overlay for Mobile */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/40 to-black/60 lg:hidden" />
+          {/* Strong Overlay for Mobile Mix */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/50 to-[#1230c6]/80 lg:hidden" />
         </div>
 
-        {/* Blue Content */}
-<div className="relative z-10 lg:col-span-3 bg-[#1230c6] text-white p-10 md:p-14 lg:p-16 flex items-center justify-between gap-10">
-  
-  {/* Left Content */}
-  <div>
-    <h2 className="text-4xl md:text-5xl font-bold leading-tight">
-      Made To
-      <br />
-      Go Anywhere.
-    </h2>
+        {/* Blue Content - Overlay on Mobile */}
+        <div className="relative z-10 lg:col-span-3 bg-[#1230c6]/30 lg:bg-[#1230c6] text-white p-10 md:p-14 lg:p-16 flex flex-col justify-center">
+          
+          <div>
+            <h2 className="text-4xl md:text-5xl font-bold leading-tight">
+              Made To<br />Go Anywhere.
+            </h2>
 
-    <p className="mt-5 text-base md:text-lg text-white/90 max-w-md">
-      From the beach to the streets.
-      <br />
-      Always with you.
-    </p>
+            <p className="mt-5 text-base md:text-lg text-white/90 max-w-md">
+              From the beach to the streets.<br />
+              Always with you.
+            </p>
 
-    <button className="mt-10 bg-white text-[#1230c6] hover:bg-gray-100 transition-colors px-9 py-3.5 rounded-md font-medium text-sm tracking-wider w-fit">
-      SHOP NOW
-    </button>
-  </div>
+            <button className="mt-10 bg-white text-[#1230c6] hover:bg-gray-100 transition-colors px-9 py-3.5 rounded-md font-medium text-sm tracking-wider w-fit">
+              SHOP NOW
+            </button>
+          </div>
 
-  {/* Logo */}
-  <div className="hidden md:flex items-center justify-center shrink-0">
-    <div className="w-24 h-24 bg-white rounded-full flex items-center justify-center shadow-inner">
-      <span className="text-[#1230c6] text-5xl font-black">K</span>
-    </div>
-  </div>
-
-</div>
+          {/* Logo - Hidden on very small screens, visible from md */}
+          <div className="hidden md:flex items-center justify-center mt-12 lg:mt-auto">
+            <div className="w-24 h-24 bg-white rounded-full flex items-center justify-center shadow-inner">
+              <span className="text-[#1230c6] text-5xl font-black">K</span>
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Features Section */}
