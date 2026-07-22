@@ -37,7 +37,7 @@ import { FaFacebookF } from "react-icons/fa";
 
 const Footer = () => {
   return (
-    <footer className="bg-[#0a2540] text-white pt-16 pb-10">
+    <footer className="bg-[#1230c6] text-white pt-16 pb-10">
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid grid-cols-2 md:grid-cols-12 gap-10">
           
@@ -93,7 +93,7 @@ const Footer = () => {
                 placeholder="Your email"
                 className="w-full bg-white/10 border border-white/30 rounded-full py-3.5 px-6 text-sm focus:outline-none focus:border-white/50 placeholder:text-white/50"
               />
-              <button className="absolute right-2 top-1/2 -translate-y-1/2 bg-white text-[#0a2540] p-2.5 rounded-full hover:bg-gray-100 transition">
+              <button className="absolute right-2 top-1/2 -translate-y-1/2 bg-white text-[#1230c6] p-2.5 rounded-full hover:bg-gray-100 transition">
                 →
               </button>
             </div>

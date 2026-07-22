@@ -6,10 +6,10 @@ const AboutSection = () => {
         {/* Content */}
         <div className="relative z-10 lg:col-span-1 bg-[#f8f4ed] p-12 md:p-16 lg:p-20 flex flex-col justify-center">
           <div className="flex items-center gap-6 mb-8">
-            <div className="w-24 h-24 bg-[#0a2540] rounded-full flex items-center justify-center flex-shrink-0">
+            <div className="w-24 h-24 bg-[#1230c6] rounded-full flex items-center justify-center flex-shrink-0">
               <span className="text-white text-6xl font-black tracking-tighter">K</span>
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold text-[#0a2540] leading-none">
+            <h2 className="text-4xl md:text-5xl font-bold text-[#1230c6] leading-none">
               About KAPATO
             </h2>
           </div>
@@ -23,7 +23,7 @@ const AboutSection = () => {
 
           <a 
             href="/our-story" 
-            className="mt-10 inline-flex items-center gap-3 text-[#0a2540] font-medium group"
+            className="mt-10 inline-flex items-center gap-3 text-[#1230c6] font-medium group"
           >
             READ OUR STORY 
             <span className="text-xl group-hover:translate-x-2 transition-transform">→</span>
@@ -40,7 +40,7 @@ const AboutSection = () => {
           {/* Dark Overlay for Mobile */}
           <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/50 to-black/70 lg:hidden" />
         </div>
-        
+
       </div>
     </div>
   );
