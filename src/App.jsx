@@ -17,7 +17,7 @@ function App() {
 
   return (
     <div className="min-h-screen bg-[#ffffff]">
-      {!isCheckout && <Header />}   {/* هيخفي الـ Header في Checkout */}
+      {/* {!isCheckout && <Header />}   هيخفي الـ Header في Checkout */}
 
       <Routes>
         <Route path="/" element={<Home />} />

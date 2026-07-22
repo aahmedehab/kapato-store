@@ -37,7 +37,7 @@ const Checkout = () => {
     ).join("\n");
 
     const templateParams = {
-      to_email: "ahmedehabahmed2004@gmail.com",
+      to_email: "kapato.eg@gmail.com",
       order_id: "KAPATO-" + Date.now().toString().slice(-6),
       customer_name: `${formData.firstName} ${formData.lastName}`,
       email: formData.email,

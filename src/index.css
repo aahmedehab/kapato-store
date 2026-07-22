@@ -27,7 +27,7 @@ body,
 .animate-marquee {
   display: flex;
   width: fit-content;
-  animation: marquee 28s linear infinite;
+  animation: marquee 50s linear infinite;
   will-change: transform;
 }
 
