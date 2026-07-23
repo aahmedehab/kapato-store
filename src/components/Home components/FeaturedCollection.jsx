@@ -28,7 +28,7 @@ const FeaturedCollection = () => {
           
           <Link 
             to="/shop" 
-            className="mt-6 md:mt-0 group flex items-center gap-2 text-primary font-medium hover:text-primary-hover transition-colors"
+            className="mt-6 md:mt-0 group flex items-center gap-2 text-primary font-medium hover:text-primary-dark transition-colors"
           >
             SHOP ALL 
             <span className="group-hover:translate-x-1 transition-transform">→</span>

@@ -42,7 +42,7 @@ const AboutSection = () => {
 
           <a
             href="/our-story"
-            className="mt-10 inline-flex items-center gap-3 text-primary hover:text-primary-hover font-medium group"
+            className="mt-10 inline-flex items-center gap-3 text-primary hover:text-primary-dark font-medium group"
           >
             READ OUR STORY
             <span className="text-xl group-hover:translate-x-2 transition-transform">

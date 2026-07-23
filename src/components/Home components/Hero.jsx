@@ -77,7 +77,7 @@ const Hero = () => {
         </p>
 
 <Link to="/shop">
-  <button className="mt-8 bg-primary hover:bg-primary-hover transition-colors text-secondary px-8 py-3.5 rounded-md font-medium text-sm tracking-wider">
+  <button className="mt-8 bg-primary hover:bg-primary-dark transition-colors text-secondary px-8 py-3.5 rounded-md font-medium text-sm tracking-wider">
     SHOP NOW
   </button>
 </Link>

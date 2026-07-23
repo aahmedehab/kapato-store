@@ -30,7 +30,7 @@ const MadeToGoAnywhere = () => {
               Always with you.
             </p>
             <Link to="/shop">
-              <button className="mt-10 bg-secondary text-primary hover:bg-secondary-hover transition-colors px-9 py-3.5 rounded-md font-medium text-sm tracking-wider w-fit">
+              <button className="mt-10 bg-secondary text-primary hover:bg-secondary-dark transition-colors px-9 py-3.5 rounded-md font-medium text-sm tracking-wider w-fit">
                 SHOP NOW
               </button>
             </Link>
