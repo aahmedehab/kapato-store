@@ -1,6 +1,7 @@
 import { Routes, Route, useLocation } from "react-router-dom";
 
 import Header from "./components/Header";
+import Nav from "./components/Nav";
 import Footer from "./components/Footer";
 
 import Home from "./components/Pages/Home";
@@ -18,7 +19,7 @@ function App() {
   return (
     <div className="min-h-screen bg-[#ffffff]">
       {/* {!isCheckout && <Header />}   هيخفي الـ Header في Checkout */}
-
+  <Nav />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />

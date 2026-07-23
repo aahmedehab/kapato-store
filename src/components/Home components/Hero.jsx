@@ -20,11 +20,11 @@
 
 
 
-
+import { Link } from "react-router-dom";
 
 const Hero = () => {
   return (
-    <div className="relative min-h-[580px] md:min-h-[650px] lg:min-h-[720px] flex items-center overflow-hidden bg-[#f8f4ed]">
+    <div className="relative min-h-[580px] md:min-h-[650px] lg:min-h-[720px] flex items-center overflow-hidden bg-secondary">
       {/* Background Image */}
       <img 
         src="/images/hero2.jpg"   // ← Replace with your actual image path
@@ -33,13 +33,19 @@ const Hero = () => {
       />
       
       {/* Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-r from-[#f8f4ed]/90 via-[#f8f4ed]/70 to-transparent lg:from-transparent lg:via-transparent lg:to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-r from-secondary-90 via-secondary-70 to-transparent lg:from-transparent lg:via-transparent lg:to-transparent" />
 
       {/* Navigation */}
-      <nav className="absolute top-0 left-0 right-0 z-20 flex items-center justify-between px-6 py-5 md:px-12">
-        <div className="text-2xl font-bold tracking-wider text-[#1230c6]">KAPATO</div>
+      {/* <nav className="absolute top-0 left-0 right-0 z-20 flex items-center justify-between px-6 py-5 md:px-12">
+          <Link to="/">
+  <img
+    src="/images/logo/kapato logo primary.png"
+    alt="KAPATO Logo"
+    className="h-5 lg:h-6 w-auto"
+  />
+</Link>
         
-        <div className="hidden md:flex items-center gap-8 text-sm font-medium text-[#1230c6]">
+        <div className="hidden md:flex items-center gap-8 text-sm font-medium text-primary">
           <a href="#" className="hover:underline">SHOP</a>
           <a href="#" className="hover:underline">COLLECTIONS</a>
           <a href="#" className="hover:underline">ABOUT</a>
@@ -47,36 +53,34 @@ const Hero = () => {
         </div>
 
         <div className="flex items-center gap-4">
-          <button className="text-[#1230c6]">
+          <button className="text-primary">
             <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 01-14 0 7 7 0 0114 0z" />
             </svg>
           </button>
-          <button className="text-[#1230c6] relative">
+          <button className="text-primary relative">
             <svg xmlns="http://www.w3.org/2000/svg" className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
             </svg>
           </button>
         </div>
-      </nav>
-
+      </nav> */}
       {/* Content */}
       <div className="relative z-10 max-w-2xl px-6 md:px-12 lg:pl-20">
-        <h1 className="text-[#1230c6] text-5xl md:text-6xl lg:text-7xl font-bold leading-none tracking-tight">
+        <h1 className="text-primary text-5xl md:text-6xl lg:text-7xl font-bold leading-none tracking-tight">
           Made For<br />Sun Days.
         </h1>
         
-        <p className="mt-4 text-[#1230c6] text-lg md:text-xl max-w-md">
+        <p className="mt-4 text-primary text-lg md:text-xl max-w-md">
           Beach days, city ways,<br />
           always on your head.
         </p>
 
-        <button 
-          className="mt-8 bg-[#1230c6] hover:bg-[#1a3550] transition-colors text-white px-8 py-3.5 rounded-md font-medium text-sm tracking-wider"
-          onClick={() => window.scrollTo({ top: 800, behavior: 'smooth' })}
-        >
-          SHOP NOW
-        </button>
+<Link to="/shop">
+  <button className="mt-8 bg-primary hover:bg-primary-hover transition-colors text-secondary px-8 py-3.5 rounded-md font-medium text-sm tracking-wider">
+    SHOP NOW
+  </button>
+</Link>
       </div>
 
       {/* Mobile Navigation Toggle (optional) */}

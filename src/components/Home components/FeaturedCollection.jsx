@@ -14,11 +14,11 @@ const FeaturedCollection = () => {
   }, []);
 
   return (
-    <div className="w-full py-10 bg-[#f8f4ed] overflow-hidden">
+    <div className="w-full py-10 bg-secondary overflow-hidden">
       <div className="mx-auto px-6 mb-12">
-        <div className="flex flex-col md:flex-row md:items-end justify-between">
-          <div>
-            <h2 className="text-[#1230c6] text-4xl md:text-5xl font-bold tracking-tight">
+<div className="flex flex-col items-start">
+            <div>
+            <h2 className="text-primary text-4xl md:text-5xl font-bold tracking-tight">
               Our Collection
             </h2>
             <p className="text-gray-600 mt-3 text-lg">
@@ -28,7 +28,7 @@ const FeaturedCollection = () => {
           
           <Link 
             to="/shop" 
-            className="mt-6 md:mt-0 group flex items-center gap-2 text-[#1230c6] font-medium hover:text-black transition-colors"
+            className="mt-6 md:mt-0 group flex items-center gap-2 text-primary font-medium hover:text-primary-hover transition-colors"
           >
             SHOP ALL 
             <span className="group-hover:translate-x-1 transition-transform">→</span>
@@ -53,10 +53,10 @@ const FeaturedCollection = () => {
               </div>
               
               <div className="text-center mt-6">
-                <p className="font-semibold text-[#1230c6] text-xl tracking-tight">
+                <p className="font-semibold text-primary text-xl tracking-tight">
                   {product.name}
                 </p>
-                <p className="text-gray-500 mt-1.5">EGP 550</p>
+                <p className="text-gray-500 mt-1.5">{product.price} EGP</p>
               </div>
             </Link>
           ))}
