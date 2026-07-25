@@ -3,13 +3,14 @@ import { useCart } from "../context/CartContext";
 import { ShoppingCart, Menu, X } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
-const Nav = () => {
+  const Nav = ({ overlay = false }) => {
   const { cart } = useCart();
   const cartCount = cart.reduce((total, item) => total + item.quantity, 0);
 
   const [animateCart, setAnimateCart] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+
 
   useEffect(() => {
     const handleScroll = () => {
@@ -29,11 +30,19 @@ const Nav = () => {
 
   return (
     <>
-      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled 
-          ? 'bg-secondary-80 backdrop-blur-md shadow-md py-4' 
-          : 'bg-transparent py-5'
-      }`}>
+<nav
+  className={`${
+    overlay ? "fixed" : "sticky"
+  } top-0 left-0 right-0 z-50 transition-all duration-300 ${
+    overlay
+      ? (
+          isScrolled
+            ? "bg-secondary-80 backdrop-blur-md shadow-md py-4"
+            : "bg-transparent py-5"
+        )
+      : "bg-secondary-80 backdrop-blur-md shadow-md py-4"
+  }`}
+>
         <div className="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between">
           
           {/* Logo */}

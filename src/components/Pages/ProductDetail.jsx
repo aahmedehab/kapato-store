@@ -108,17 +108,23 @@ setVariants(data.variants);
     }
   };
 
-  const handlePrevImage = () => {
-    setSelectedImageIndex((prev) =>
-      prev === 0 ? variants.length - 1 : prev - 1
-    );
-  };
+const handlePrevImage = () => {
+  const newIndex =
+    selectedColorIndex === 0
+      ? variants.length - 1
+      : selectedColorIndex - 1;
 
-  const handleNextImage = () => {
-    setSelectedImageIndex((prev) =>
-      prev === variants.length - 1 ? 0 : prev + 1
-    );
-  };
+  changeVariant(newIndex);
+};
+
+const handleNextImage = () => {
+  const newIndex =
+    selectedColorIndex === variants.length - 1
+      ? 0
+      : selectedColorIndex + 1;
+
+  changeVariant(newIndex);
+};
 
   const buildCartItem = () => ({
     id: product.id,
@@ -141,12 +147,18 @@ setVariants(data.variants);
     navigate("/cart");
   };
 
+  const changeVariant = (index) => {
+  setSelectedColorIndex(index);
+  setSelectedImageIndex(index);
+};
+
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-10 lg:py-12 bg-white">
+    <div className="bg-secondary-30">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-10 lg:py-12">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 lg:gap-16">
         {/* Left Column — Gallery & Logistics */}
         <div className="space-y-4 sm:space-y-5">
-          <div className="bg-[#F3F4F6] rounded-xl sm:rounded-2xl overflow-hidden relative aspect-square flex items-center justify-center">
+          <div className="bg-secondary rounded-xl sm:rounded-2xl overflow-hidden relative aspect-square flex items-center justify-center">
             <img
               src={`/images/${selectedVariant?.image}`}
               alt={product.name}
@@ -155,7 +167,7 @@ setVariants(data.variants);
             <button
               type="button"
               onClick={handlePrevImage}
-              className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 w-9 h-9 sm:w-10 sm:h-10 bg-white rounded-full shadow-md flex items-center justify-center hover:bg-gray-50 transition"
+              className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 w-9 h-9 sm:w-10 sm:h-10 bg-secondary rounded-full shadow-md flex items-center justify-center hover:bg-secondary-dark transition"
               aria-label="Previous image"
             >
               <ChevronLeft size={18} className="text-gray-700 sm:w-5 sm:h-5" />
@@ -163,7 +175,7 @@ setVariants(data.variants);
             <button
               type="button"
               onClick={handleNextImage}
-              className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 w-9 h-9 sm:w-10 sm:h-10 bg-white rounded-full shadow-md flex items-center justify-center hover:bg-gray-50 transition"
+              className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 w-9 h-9 sm:w-10 sm:h-10 bg-secondary rounded-full shadow-md flex items-center justify-center hover:bg-secondary-dark transition"
               aria-label="Next image"
             >
               <ChevronRight size={18} className="text-gray-700 sm:w-5 sm:h-5" />
@@ -175,27 +187,24 @@ setVariants(data.variants);
               <button
                 key={variant.sku}
                 type="button"
-                onClick={() => {
-                  setSelectedImageIndex(i);
-                  setSelectedColorIndex(i);
-                }}
+onClick={() => changeVariant(i)}  
                 className={`w-14 h-14 sm:w-[72px] sm:h-[72px] bg-[#F3F4F6] rounded-lg sm:rounded-xl overflow-hidden flex-shrink-0 border-2 transition ${
                   selectedImageIndex === i
-                    ? 'border-blue-600'
+                    ? 'border-primary '
                     : 'border-transparent hover:border-gray-300'
                 }`}
               >
                 <img
                   src={`/images/${variant.image}`}
                   alt=""
-                  className="w-full h-full object-contain p-1"
+                  className="w-full h-full object-contain "
                 />
               </button>
             ))}
           </div>
 
           <div className="grid grid-cols-1 min-[480px]:grid-cols-2 gap-3 sm:gap-4 pt-1 sm:pt-2">
-            <div className="border border-gray-200 rounded-xl p-4 sm:p-5 bg-white">
+            <div className="border border-gray-200 rounded-xl p-4 sm:p-5 bg-secondary-50">
               <p className="text-sm font-semibold text-gray-900 mb-1.5 sm:mb-2">
                 Production time
               </p>
@@ -204,7 +213,7 @@ setVariants(data.variants);
                 Standard production timeline for this item
               </p>
             </div>
-            <div className="border border-gray-200 rounded-xl p-4 sm:p-5 bg-white">
+            <div className="border border-gray-200 rounded-xl p-4 sm:p-5 bg-secondary-50">
               <p className="text-sm font-semibold text-gray-900 mb-1.5 sm:mb-2">
                 Delivery time
               </p>
@@ -225,7 +234,7 @@ setVariants(data.variants);
               {product.name}
             </h1>
             <div className="flex flex-wrap items-center gap-2 mt-2 sm:mt-3">
-              <span className="inline-flex items-center gap-2 bg-gray-100 text-gray-600 text-[11px] sm:text-xs font-mono px-2.5 sm:px-3 py-1.5 rounded-lg max-w-full">
+              <span className="inline-flex items-center gap-2 bg-primary-10 text-gray-600 text-[11px] sm:text-xs font-mono px-2.5 sm:px-3 py-1.5 rounded-lg max-w-full">
                 <span className="truncate">SKU: {selectedVariant.sku}</span>
                 <button
                   type="button"
@@ -249,10 +258,7 @@ setVariants(data.variants);
                 <button
                   key={variant.sku}
                   type="button"
-                  onClick={() => {
-                    setSelectedColorIndex(i);
-                    setSelectedImageIndex(i);
-                  }}
+onClick={() => changeVariant(i)}
                   className={`w-10 h-10 rounded-lg border-2 transition hover:scale-105 ${
                     selectedColorIndex === i
                       ? 'border-blue-600 ring-1 ring-blue-600'
@@ -265,7 +271,7 @@ setVariants(data.variants);
             </div>
           </div>
 
-          <div className="bg-[#F3F4F6] rounded-xl px-4 sm:px-5 py-3.5 sm:py-4 space-y-2">
+          <div className="bg-primary-10 rounded-xl px-4 sm:px-5 py-3.5 sm:py-4 space-y-2">
             <div className="flex justify-between items-center gap-3 text-sm">
               <span className="text-gray-500 shrink-0">SKU:</span>
               <span className="font-mono text-gray-700 text-[11px] sm:text-xs text-right truncate">
@@ -319,7 +325,7 @@ setVariants(data.variants);
             </div>
           </div>
 
-          <div className="border border-gray-200 rounded-xl p-4 sm:p-5 bg-white space-y-3">
+          <div className="border border-gray-200 rounded-xl p-4 sm:p-5 bg-secondary-50 space-y-3">
             <div className="flex justify-between gap-3 text-xs sm:text-sm text-gray-600">
               <span>Unit Price (Item):</span>
               <span className="shrink-0">{formatPrice(product.price)}</span>
@@ -345,7 +351,7 @@ setVariants(data.variants);
             <button
               type="button"
               onClick={handleAddToCart}
-              className="flex-1 bg-blue-600 text-white py-3.5 rounded-xl text-sm sm:text-base font-semibold hover:bg-blue-700 transition"
+              className="flex-1 bg-primary text-white py-3.5 rounded-xl text-sm sm:text-base font-semibold hover:bg-primary-dark transition"
             >
               Add to Cart
             </button>
@@ -373,7 +379,7 @@ setVariants(data.variants);
       </div>
 
       {/* Tabs Section — Full Width */}
-      <div className="mt-10 sm:mt-14">
+      <div className="mt-10 sm:mt-14 bg-">
         <div className="flex border-b border-gray-200 overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
           {TABS.map((tab) => (
             <button
@@ -390,7 +396,7 @@ setVariants(data.variants);
             </button>
           ))}
         </div>
-        <div className="mt-4 sm:mt-6 border border-gray-200 rounded-xl bg-[#F9FAFB] p-4 sm:p-6 min-h-[100px] sm:min-h-[120px]">
+        <div className="mt-4 sm:mt-6 border border-gray-200 rounded-xl bg-secondary-50 p-4 sm:p-6 min-h-[100px] sm:min-h-[120px]">
           <div className="text-sm sm:text-base text-gray-600 leading-relaxed">
             {TAB_CONTENT[activeTab]}
           </div>
@@ -430,24 +436,25 @@ setVariants(data.variants);
           Physical Dimensions
         </h2>
         <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
-          <div className="bg-blue-50 rounded-xl sm:rounded-2xl p-4 sm:p-6 text-center">
-            <div className="text-2xl sm:text-4xl font-bold text-blue-600 mb-1">100</div>
-            <div className="text-xs sm:text-sm text-gray-600">Weight (g)</div>
+          <div className="bg-primary-10 rounded-xl sm:rounded-2xl p-4 sm:p-6 text-center">
+            <div className="text-2xl sm:text-4xl font-bold text-primary mb-1">100</div>
+            <div className="text-xs sm:text-sm text-primary-70">Weight (g)</div>
           </div>
-          <div className="bg-emerald-50 rounded-xl sm:rounded-2xl p-4 sm:p-6 text-center">
-            <div className="text-2xl sm:text-4xl font-bold text-emerald-600 mb-1">2</div>
-            <div className="text-xs sm:text-sm text-gray-600">Length (cm)</div>
+          <div className="bg-primary-10 rounded-xl sm:rounded-2xl p-4 sm:p-6 text-center">
+            <div className="text-2xl sm:text-4xl font-bold text-primary mb-1">2</div>
+            <div className="text-xs sm:text-sm text-primary-70">Length (cm)</div>
           </div>
-          <div className="bg-purple-50 rounded-xl sm:rounded-2xl p-4 sm:p-6 text-center">
-            <div className="text-2xl sm:text-4xl font-bold text-purple-600 mb-1">2</div>
-            <div className="text-xs sm:text-sm text-gray-600">Width (cm)</div>
+          <div className="bg-primary-10 rounded-xl sm:rounded-2xl p-4 sm:p-6 text-center">
+            <div className="text-2xl sm:text-4xl font-bold text-primary mb-1">2</div>
+            <div className="text-xs sm:text-sm text-primary-70">Width (cm)</div>
           </div>
-          <div className="bg-orange-50 rounded-xl sm:rounded-2xl p-4 sm:p-6 text-center">
-            <div className="text-2xl sm:text-4xl font-bold text-orange-600 mb-1">2</div>
-            <div className="text-xs sm:text-sm text-gray-600">Height (cm)</div>
+          <div className="bg-primary-10 rounded-xl sm:rounded-2xl p-4 sm:p-6 text-center">
+            <div className="text-2xl sm:text-4xl font-bold text-primary mb-1">2</div>
+            <div className="text-xs sm:text-sm text-primary-70">Height (cm)</div>
           </div>
         </div>
       </div>
+    </div>
     </div>
   );
 };

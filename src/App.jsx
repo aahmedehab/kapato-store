@@ -14,12 +14,16 @@ import Terms from "./components/Pages/Terms";
 
 function App() {
   const location = useLocation();
+
+  const isHome = location.pathname === "/";
   const isCheckout = location.pathname === "/checkout";
 
   return (
     <div className="min-h-screen bg-[#ffffff]">
+            {!isCheckout && <Nav overlay={isHome} />}
+
       {/* {!isCheckout && <Header />}   هيخفي الـ Header في Checkout */}
-  <Nav />
+      <div className={!isHome && !isCheckout ? "" : ""}>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
@@ -31,6 +35,7 @@ function App() {
       </Routes>
 
       <Footer />
+    </div>
     </div>
   );
 }

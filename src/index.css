@@ -11,18 +11,28 @@
 :root {
   /* Brand Colors */
   --primary: #1230c6;
+  --primary-10: rgba(18, 48, 198, 0.1);
+  --primary-20: rgba(18, 48, 198, 0.2);
   --primary-30: rgba(18, 48, 198, 0.3);
+  --primary-40: rgba(18, 48, 198, 0.4);
+  --primary-50: rgba(18, 48, 198, 0.5);
+  --primary-60: rgba(18, 48, 198, 0.6);
   --primary-70: rgba(18, 48, 198, 0.7);
   --primary-80: rgba(18, 48, 198, 0.8);
+  --primary-90: rgba(18, 48, 198, 0.9);
   --primary-dark: #0a1f7a;
   --secondary: #f8dfc5;
+  --secondary-10: rgba(248, 223, 197, 0.1);
   --secondary-20: rgba(248, 223, 197, 0.2);
   --secondary-30: rgba(248, 223, 197, 0.3);
+  --secondary-40: rgba(248, 223, 197, 0.4);
+  --secondary-50: rgba(248, 223, 197, 0.5);
   --secondary-60: rgba(248, 223, 197, 0.6);
   --secondary-70: rgba(248, 223, 197, 0.7);
   --secondary-80: rgba(248, 223, 197, 0.8);
   --secondary-90: rgba(248, 223, 197, 0.9);
---secondary-dark: #f3d2b0;}
+  --secondary-dark: #f3d2b0;
+}
 
 @keyframes marquee {
   from {

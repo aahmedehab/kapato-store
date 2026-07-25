@@ -26,7 +26,7 @@ fetch(`${API_URL}/api/products`)
     product.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  if (loading) return <div className="text-center py-20 text-xl">Loading products...</div>;
+  if (loading) return <div className="text-center py-20 text-xl bg-secondary-30">Loading products...</div>;
 
   return (
     <div className="min-h-screen bg-secondary-30">
