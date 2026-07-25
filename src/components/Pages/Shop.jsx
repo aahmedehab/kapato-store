@@ -29,17 +29,17 @@ fetch(`${API_URL}/api/products`)
   if (loading) return <div className="text-center py-20 text-xl">Loading products...</div>;
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-secondary-30">
       {/* Premium Products Header */}
-      <div className="bg-gray-50 py-16">
+      <div className="py-16">
         <div className="max-w-7xl mx-auto px-6 text-center">
-          <h1 className="text-4xl font-bold text-gray-900">Premium Products Collection</h1>
-          <p className="text-gray-600 mt-3 text-lg">Discover our wide range of products</p>
+          <h1 className="text-4xl font-bold text-primary">Premium Products Collection</h1>
+          <p className="text-primary-70 mt-3 text-lg">Discover our wide range of products</p>
         </div>
       </div>
 
       {/* Search & Filter Bar */}
-<div className="top-0 bg-white z-10">
+<div className="top-0 z-10">
   <div className="max-w-7xl w-[90%] mx-auto border-b border-gray-200">
     <div className="px-6 py-6 flex flex-col md:flex-row gap-4 items-center">
       <div className="flex-1 w-full relative">
@@ -53,14 +53,12 @@ fetch(`${API_URL}/api/products`)
         <Search className="absolute left-5 top-3.5 text-gray-400" size={20} />   {/* ← غيرتها */}
       </div>
 
-      {/* <div>
+      <div>
         <select className="border border-gray-300 rounded-2xl py-3 px-6 text-sm focus:outline-none">
           <option>All Categories</option>
-          <option>Caps</option>
-          <option>T-Shirts</option>
-          <option>Accessories</option>
+          <option>All products</option>
         </select>
-      </div> */}
+      </div>
     </div>
   </div>
 </div>
@@ -74,7 +72,7 @@ fetch(`${API_URL}/api/products`)
               key={product.id}
               className="group"
             >
-              <div className="bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300">
+              <div className="bg-secondary rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300">
                 <div className="aspect-[4/4] bg-gray-100 overflow-hidden">
                   <img 
                     src={`/images/${product.img}`}
