@@ -12,7 +12,7 @@ const Cart = () => {
 
   if (cart.length === 0) {
     return (
-      <div className="min-h-[70vh] flex flex-col items-center justify-center text-center px-6">
+      <div className="min-h-[70vh] flex flex-col bg-secondary-30 items-center justify-center text-center px-6">
         <div className="mb-8">
           <div className="w-24 h-24 mx-auto bg-gray-100 rounded-2xl flex items-center justify-center">
             <ShoppingCart size={48} className="text-gray-400" />
@@ -36,6 +36,8 @@ const Cart = () => {
   }
 
   return (
+              <div className="bg-secondary-30">
+
     <div className="max-w-6xl mx-auto px-6 py-12">
       <h1 className="text-3xl font-bold mb-2">Shopping Cart</h1>
       <p className="text-gray-500 mb-10">{cart.length} items</p>
@@ -45,7 +47,7 @@ const Cart = () => {
         {/* Cart Items */}
         <div className="lg:col-span-7 space-y-8">
           {cart.map((item, index) => (
-            <div key={item.sku} className="flex gap-6 bg-white p-6 rounded-2xl border">
+            <div key={item.sku} className="flex gap-6 bg-secondary-50 p-6 rounded-2xl border">
               <div className="w-28 h-28 bg-gray-100 rounded-xl overflow-hidden flex-shrink-0">
                 <img
                   src={item.img}
@@ -72,14 +74,14 @@ const Cart = () => {
                   <div className="flex items-center gap-3">
                     <button
                       onClick={() => updateQuantity(index, item.quantity - 1)}
-                      className="w-8 h-8 border rounded-lg hover:bg-gray-100 flex items-center justify-center"
+                      className="w-8 h-8 border rounded-lg bg-secondary hover:bg-secondary-dark flex items-center justify-center"
                     >
                       −
                     </button>
                     <span className="w-8 text-center font-medium">{item.quantity}</span>
                     <button
                       onClick={() => updateQuantity(index, item.quantity + 1)}
-                      className="w-8 h-8 border rounded-lg hover:bg-gray-100 flex items-center justify-center"
+                      className="w-8 h-8 border rounded-lg bg-secondary hover:bg-secondary-dark flex items-center justify-center"
                     >
                       +
                     </button>
@@ -93,7 +95,7 @@ const Cart = () => {
 
         {/* Order Summary */}
         <div className="lg:col-span-5">
-          <div className="bg-white border rounded-2xl p-8 sticky top-8">
+          <div className="bg-secondary-50 border rounded-2xl p-8 sticky top-8">
             <h3 className="font-semibold text-xl mb-6">Summary</h3>
             
             <div className="space-y-4 text-sm">
@@ -114,13 +116,14 @@ const Cart = () => {
 
             <Link
               to="/checkout"
-              className="block w-full bg-black text-white text-center py-4 rounded-xl mt-8 font-medium hover:bg-gray-800 transition"
+              className="block w-full bg-primary text-white text-center py-4 rounded-xl mt-8 font-medium hover:bg-primary-dark transition"
             >
               Proceed to Checkout
             </Link>
           </div>
         </div>
       </div>
+    </div>
     </div>
   );
 };

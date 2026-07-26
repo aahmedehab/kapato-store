@@ -2,11 +2,12 @@ import { useCart } from '../../context/CartContext';
 import { useState } from 'react';
 import emailjs from '@emailjs/browser';
 import { ShoppingCart } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { EMAILJS_CONFIG } from "../../config/emailjs";
 
 const Checkout = () => {
-  const { cart } = useCart();
+const { cart, clearCart } = useCart();
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     email: '',
@@ -19,7 +20,7 @@ const Checkout = () => {
     postalCode: '',
     phone: '',
   });
-
+  
   const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
   const shipping = 85;
   const total = subtotal + shipping;
@@ -36,20 +37,66 @@ const Checkout = () => {
       `${item.name} (${item.color} - ${item.sku}) x${item.quantity} = LE ${item.price * item.quantity}`
     ).join("\n");
 
-    const templateParams = {
-      to_email: "kapato.eg@gmail.com",
-      order_id: "KAPATO-" + Date.now().toString().slice(-6),
+    
+    try {
+    const orderResponse = await fetch(`${import.meta.env.VITE_API_URL}/api/orders`, {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify({
+    customer: {
       customer_name: `${formData.firstName} ${formData.lastName}`,
       email: formData.email,
       phone: formData.phone,
-      address: `${formData.address}, ${formData.apartment ? formData.apartment + ', ' : ''}${formData.city}, ${formData.governorate}`,
-      items: orderDetails,
-      subtotal: subtotal,
-      shipping: shipping,
-      total: total,
-    };
+      address: formData.address,
+      city: formData.city,
+      governorate: formData.governorate,
+    },
 
-  try {
+    cart,
+
+    subtotal,
+    shipping,
+    total,
+  }),
+});
+
+
+if (!orderResponse.ok) {
+  throw new Error("Failed to create order");
+}
+
+const orderData = await orderResponse.json();
+
+if (!orderData.success) {
+  throw new Error(orderData.message);
+}
+
+const templateParams = {
+  to_email: "kapato.eg@gmail.com",
+
+  order_id: orderData.orderId,
+
+  customer_name: `${formData.firstName} ${formData.lastName}`,
+
+  email: formData.email,
+
+  phone: formData.phone,
+
+  address: `${formData.address}, ${
+    formData.apartment ? formData.apartment + ", " : ""
+  }${formData.city}, ${formData.governorate}`,
+
+  items: orderDetails,
+
+  subtotal,
+
+  shipping,
+
+  total,
+};
+
 await Promise.all([
   emailjs.send(
     EMAILJS_CONFIG.SERVICE_ID,
@@ -57,6 +104,7 @@ await Promise.all([
     templateParams,
     EMAILJS_CONFIG.PUBLIC_KEY
   ),
+
   emailjs.send(
     EMAILJS_CONFIG.SERVICE_ID,
     EMAILJS_CONFIG.ADMIN_TEMPLATE_ID,
@@ -65,7 +113,25 @@ await Promise.all([
   ),
 ]);
 
-      alert("✅ Order placed successfully! Check your email.");
+if (typeof clearCart === "function") {
+  clearCart();
+}
+
+navigate("/confirmation", {
+  state: {
+    orderId: orderData.orderId,
+
+    formData,
+
+    cart: [...cart],
+
+    subtotal,
+
+    shipping,
+
+    total,
+  },
+});
     } catch (error) {
       console.error(error);
       alert("❌ Failed to send order.");
@@ -137,13 +203,17 @@ await Promise.all([
                 </div>
               </div>
 
-              <button 
-                type="submit"
-                disabled={loading}
-                className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white px-4 py-3 rounded-2xl text-base font-medium transition mt-6"
-              >
-                {loading ? "Sending Order..." : "Complete Order"}
-              </button>
+<button
+  type="submit"
+  disabled={loading || cart.length === 0}
+  className="w-full bg-primary hover:bg-primary-dark disabled:bg-gray-400 disabled:cursor-not-allowed text-white px-4 py-3 rounded-2xl text-base font-medium transition mt-6"
+>
+  {loading
+    ? "Completing Order..."
+    : cart.length === 0
+      ? "Cart is Empty"
+      : "Complete Order"}
+</button>
             </form>
           </div>
 

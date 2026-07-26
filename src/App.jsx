@@ -11,6 +11,9 @@ import ProductDetail from './components/Pages/ProductDetail';
 import Cart from './components/Pages/Cart';
 import Checkout from './components/Pages/Checkout';
 import Terms from "./components/Pages/Terms";
+import Confirmation from "./components/Pages/Confirmation";
+
+import ScrollToTop from "./components/ScrollToTop";
 
 function App() {
   const location = useLocation();
@@ -20,6 +23,8 @@ function App() {
 
   return (
     <div className="min-h-screen bg-[#ffffff]">
+          <ScrollToTop />
+
             {!isCheckout && <Nav overlay={isHome} />}
 
       {/* {!isCheckout && <Header />}   هيخفي الـ Header في Checkout */}
@@ -31,6 +36,7 @@ function App() {
         <Route path="/product/:id" element={<ProductDetail />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/checkout" element={<Checkout />} />
+        <Route path="/confirmation" element={<Confirmation />} />
         <Route path="/terms" element={<Terms />} />
       </Routes>
 
