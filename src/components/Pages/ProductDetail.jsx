@@ -64,6 +64,9 @@ const [product, setProduct] = useState(null);
 const [variants, setVariants] = useState([]);
 const [loading, setLoading] = useState(true);
 
+const [isAdding, setIsAdding] = useState(false);
+const [added, setAdded] = useState(false);
+
 useEffect(() => {
   const fetchProduct = async () => {
     try {
@@ -138,9 +141,22 @@ const handleNextImage = () => {
     quantity,
   });
 
-  const handleAddToCart = () => {
+const handleAddToCart = () => {
+  setIsAdding(true);
+  setAdded(false);
+
+  // Simulate a small delay for the animation
+  setTimeout(() => {
     addToCart(buildCartItem());
-  };
+    setIsAdding(false);
+    setAdded(true);
+
+    // Reset after 2 seconds
+    setTimeout(() => {
+      setAdded(false);
+    }, 2000);
+  }, 600);
+};
 
   const handleBuyNow = () => {
     addToCart(buildCartItem());
@@ -339,7 +355,7 @@ onClick={() => changeVariant(i)}
               <span className="font-bold text-gray-900 text-sm sm:text-base">
                 Total (Item Price Only):
               </span>
-              <span className="font-bold text-blue-600 text-lg sm:text-xl">
+              <span className="font-bold text-primary text-lg sm:text-xl">
                 {formatPrice(subtotal)}
               </span>
             </div>
@@ -348,13 +364,29 @@ onClick={() => changeVariant(i)}
             </p> */}
           </div>
           <div className="flex flex-col sm:flex-row gap-3">
-            <button
-              type="button"
-              onClick={handleAddToCart}
-              className="flex-1 bg-primary text-white py-3.5 rounded-xl text-sm sm:text-base font-semibold hover:bg-primary-dark transition"
-            >
-              Add to Cart
-            </button>
+<button
+  type="button"
+  onClick={handleAddToCart}
+  disabled={isAdding || added}
+  className={`flex-1 py-3.5 rounded-xl text-sm sm:text-base font-semibold transition flex items-center justify-center gap-2
+    ${added 
+      ? 'bg-primary-dark text-white' 
+      : isAdding 
+        ? 'bg-primary-80 text-white cursor-not-allowed' 
+        : 'bg-primary text-white hover:bg-primary-dark'
+    }`}
+>
+  {isAdding ? (
+    <>
+      <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+      Adding...
+    </>
+  ) : added ? (
+    "✓ Added"
+  ) : (
+    "Add to Cart"
+  )}
+</button>
             <button
               type="button"
               className="flex-1 bg-gray-800 text-white py-3.5 rounded-xl text-sm sm:text-base font-semibold hover:bg-gray-900 transition"
@@ -388,8 +420,8 @@ onClick={() => changeVariant(i)}
               onClick={() => setActiveTab(tab)}
               className={`px-3 sm:px-5 py-3 sm:py-3.5 text-xs sm:text-sm font-medium whitespace-nowrap border-b-2 transition shrink-0 ${
                 activeTab === tab
-                  ? 'border-blue-600 text-blue-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700'
+                  ? 'border-primary-90 text-primary-90'
+                  : 'border-transparent text-gray-500 hover:text-primary-dark'
               }`}
             >
               {tab}
