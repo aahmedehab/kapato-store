@@ -15,20 +15,27 @@ import Confirmation from "./components/Pages/Confirmation";
 
 import ScrollToTop from "./components/ScrollToTop";
 
+import DashboardLayout from "./components/Dashboard/DashboardLayout";
+
+import DashboardHome from "./components/Dashboard/pages/DashboardHome";
+import Orders from "./components/Dashboard/pages/Orders";
+import Products from "./components/Dashboard/pages/Products";
+import Customers from "./components/Dashboard/pages/Customers";
+import Settings from "./components/Dashboard/pages/Settings";
+
 function App() {
   const location = useLocation();
 
   const isHome = location.pathname === "/";
   const isCheckout = location.pathname === "/checkout";
+  const isDashboard = location.pathname.startsWith("/dashboard");
 
   return (
     <div className="min-h-screen bg-[#ffffff]">
-          <ScrollToTop />
+      <ScrollToTop />
 
-            {!isCheckout && <Nav overlay={isHome} />}
+      {!isCheckout && !isDashboard && <Nav overlay={isHome} />}
 
-      {/* {!isCheckout && <Header />}   هيخفي الـ Header في Checkout */}
-      <div className={!isHome && !isCheckout ? "" : ""}>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
@@ -38,10 +45,17 @@ function App() {
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/confirmation" element={<Confirmation />} />
         <Route path="/terms" element={<Terms />} />
+
+        <Route path="/dashboard" element={<DashboardLayout />}>
+          <Route index element={<DashboardHome />} />
+          <Route path="orders" element={<Orders />} />
+          <Route path="products" element={<Products />} />
+          <Route path="customers" element={<Customers />} />
+          <Route path="settings" element={<Settings />} />
+        </Route>
       </Routes>
 
-      <Footer />
-    </div>
+      {!isDashboard && <Footer />}
     </div>
   );
 }
