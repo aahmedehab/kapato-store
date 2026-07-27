@@ -4,6 +4,8 @@ import { Search, Eye } from "lucide-react";
 import StatusBadge from "../components/StatusBadge";
 import OrderDrawer from "../components/OrderDrawer";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 const Orders = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -15,7 +17,7 @@ const Orders = () => {
   // Fetch orders
   const fetchOrders = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/orders");
+    const res = await fetch(`${API_URL}/api/products`);
       const data = await res.json();
       setOrders(data);
     } catch (err) {
@@ -32,7 +34,7 @@ const Orders = () => {
   // Update status
   const handleStatusChange = async (orderId, newStatus) => {
     try {
-      await fetch(`http://localhost:5000/api/orders/${orderId}/status`, {
+      await fetch(`${API_URL}/api/orders/${orderId}/status`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ status: newStatus }),
