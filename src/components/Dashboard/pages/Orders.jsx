@@ -17,7 +17,7 @@ const Orders = () => {
   // Fetch orders
   const fetchOrders = async () => {
     try {
-    const res = await fetch(`${API_URL}/api/products`);
+    const res = await fetch(`${API_URL}/api/orders`);
       const data = await res.json();
       setOrders(data);
     } catch (err) {
