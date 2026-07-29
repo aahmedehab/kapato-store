@@ -1,54 +1,100 @@
+import { useEffect, useState } from "react";
+
+import DashboardCards from "../components/DashboardCards";
+import RevenueChart from "../components/RevenueChart";
+import StatusChart from "../components/StatusChart";
+import TopProducts from "../components/TopProducts";
+import TopColors from "../components/TopColors";
+import RecentOrders from "../components/RecentOrders";
+import LatestCustomers from "../components/LatestCustomers";
+import TopCities from "../components/TopCities";
+import InventoryCard from "../components/InventoryCard";
+import QuickActions from "../components/QuickActions";
+
+const API_URL = import.meta.env.VITE_API_URL;
+
 const DashboardHome = () => {
-  return (
-    <div>
+  const [dashboard, setDashboard] = useState(null);
 
-      <h1 className="text-3xl font-bold mb-8">
-        Dashboard
-      </h1>
+  useEffect(() => {
+    fetchDashboard();
+  }, []);
 
-      <div className="grid md:grid-cols-4 gap-6">
+  const fetchDashboard = async () => {
+    try {
+      const res = await fetch(`${API_URL}/api/dashboard`);
+      const data = await res.json();
 
-        <div className="bg-white rounded-2xl p-6 shadow">
-          <p className="text-gray-500">
-            Orders
-          </p>
+      setDashboard(data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
-          <h2 className="text-4xl font-bold mt-2">
-            0
-          </h2>
-        </div>
-
-        <div className="bg-white rounded-2xl p-6 shadow">
-          <p className="text-gray-500">
-            Revenue
-          </p>
-
-          <h2 className="text-4xl font-bold mt-2">
-            LE 0
-          </h2>
-        </div>
-
-        <div className="bg-white rounded-2xl p-6 shadow">
-          <p className="text-gray-500">
-            Products
-          </p>
-
-          <h2 className="text-4xl font-bold mt-2">
-            0
-          </h2>
-        </div>
-
-        <div className="bg-white rounded-2xl p-6 shadow">
-          <p className="text-gray-500">
-            Customers
-          </p>
-
-          <h2 className="text-4xl font-bold mt-2">
-            0
-          </h2>
-        </div>
-
+  if (!dashboard) {
+    return (
+      <div className="p-8 text-center">
+        Loading dashboard...
       </div>
+    );
+  }
+
+  return (
+    <div className="p-6">
+
+      <DashboardCards
+        cards={dashboard.cards}
+        averageOrderValue={dashboard.averageOrderValue}
+      />
+
+      <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 mb-8">
+
+  <div className="xl:col-span-2">
+    <RevenueChart
+      data={dashboard.revenueChart}
+    />
+  </div>
+
+  <StatusChart
+    statusCounts={dashboard.statusCounts}
+  />
+
+</div>
+
+<div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+
+  <TopProducts
+    products={dashboard.topProducts}
+  />
+
+  <TopColors
+    colors={dashboard.topColors}
+  />
+
+</div>
+
+<RecentOrders
+  orders={dashboard.recentOrders}
+/>
+
+<div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+  <LatestCustomers
+    customers={dashboard.latestCustomers}
+  />
+
+  <TopCities
+    cities={dashboard.topCities}
+  />
+</div>
+
+<div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+  <InventoryCard
+    inventory={dashboard.inventory}
+  />
+
+  <QuickActions />
+</div>
+
 
     </div>
   );

@@ -20,6 +20,7 @@ import DashboardLayout from "./components/Dashboard/DashboardLayout";
 import DashboardHome from "./components/Dashboard/pages/DashboardHome";
 import Orders from "./components/Dashboard/pages/Orders";
 import Products from "./components/Dashboard/pages/Products";
+import Colors from "./components/Dashboard/pages/Colors";
 import Customers from "./components/Dashboard/pages/Customers";
 import Settings from "./components/Dashboard/pages/Settings";
 
@@ -50,6 +51,7 @@ function App() {
           <Route index element={<DashboardHome />} />
           <Route path="orders" element={<Orders />} />
           <Route path="products" element={<Products />} />
+            <Route path="colors" element={<Colors />} />
           <Route path="customers" element={<Customers />} />
           <Route path="settings" element={<Settings />} />
         </Route>

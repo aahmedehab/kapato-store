@@ -4,6 +4,7 @@ import {
   Package,
   Users,
   Settings,
+  Palette,
 } from "lucide-react";
 
 import { NavLink } from "react-router-dom";
@@ -24,6 +25,11 @@ const links = [
     icon: Package,
     path: "/dashboard/products",
   },
+  {
+  title: "Colors",
+  icon: Palette,
+  path: "/dashboard/colors",
+},
   {
     title: "Customers",
     icon: Users,
