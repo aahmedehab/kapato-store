@@ -33,69 +33,43 @@ const DashboardHome = () => {
 
   if (!dashboard) {
     return (
-      <div className="p-8 text-center">
+      <div className="py-12 text-center text-gray-500">
         Loading dashboard...
       </div>
     );
   }
 
   return (
-    <div className="p-6">
-
+    <div className="max-w-7xl mx-auto">
       <DashboardCards
         cards={dashboard.cards}
         averageOrderValue={dashboard.averageOrderValue}
       />
 
-      <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 mb-8">
+      <div className="grid grid-cols-1 xl:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
+        <div className="xl:col-span-2">
+          <RevenueChart data={dashboard.revenueChart} />
+        </div>
 
-  <div className="xl:col-span-2">
-    <RevenueChart
-      data={dashboard.revenueChart}
-    />
-  </div>
+        <StatusChart statusCounts={dashboard.statusCounts} />
+      </div>
 
-  <StatusChart
-    statusCounts={dashboard.statusCounts}
-  />
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 mb-6 sm:mb-8">
+        <TopProducts products={dashboard.topProducts} />
+        <TopColors colors={dashboard.topColors} />
+      </div>
 
-</div>
+      <RecentOrders orders={dashboard.recentOrders} />
 
-<div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 mb-6 sm:mb-8">
+        <LatestCustomers customers={dashboard.latestCustomers} />
+        <TopCities cities={dashboard.topCities} />
+      </div>
 
-  <TopProducts
-    products={dashboard.topProducts}
-  />
-
-  <TopColors
-    colors={dashboard.topColors}
-  />
-
-</div>
-
-<RecentOrders
-  orders={dashboard.recentOrders}
-/>
-
-<div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-  <LatestCustomers
-    customers={dashboard.latestCustomers}
-  />
-
-  <TopCities
-    cities={dashboard.topCities}
-  />
-</div>
-
-<div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-  <InventoryCard
-    inventory={dashboard.inventory}
-  />
-
-  <QuickActions />
-</div>
-
-
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
+        <InventoryCard inventory={dashboard.inventory} />
+        <QuickActions />
+      </div>
     </div>
   );
 };

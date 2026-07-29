@@ -138,8 +138,8 @@ const ProductDrawer = ({ product, isOpen, onClose, mode = "view", onUpdated }) =
     <>
       <div className="fixed inset-0 bg-black/40 z-40" onClick={onClose} />
 
-      <div className="fixed top-0 right-0 h-full w-full max-w-lg bg-white shadow-2xl z-50 overflow-y-auto">
-        <div className="p-6">
+      <div className="fixed top-0 right-0 h-full w-full sm:max-w-lg bg-white shadow-2xl z-50 overflow-y-auto">
+        <div className="p-4 sm:p-6">
           {/* Header */}
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-xl font-bold">

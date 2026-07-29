@@ -2,16 +2,11 @@ import { MapPin } from "lucide-react";
 
 const TopCities = ({ cities }) => {
   return (
-    <div className="bg-white border rounded-2xl p-6 h-full">
-      <div className="flex items-center justify-between mb-6">
+    <div className="bg-white border rounded-xl sm:rounded-2xl p-4 sm:p-6 h-full">
+      <div className="flex items-center justify-between mb-4 sm:mb-6">
         <div>
-          <h2 className="text-xl font-semibold">
-            Top Cities
-          </h2>
-
-          <p className="text-sm text-gray-500">
-            Orders by city
-          </p>
+          <h2 className="text-lg sm:text-xl font-semibold">Top Cities</h2>
+          <p className="text-xs sm:text-sm text-gray-500">Orders by city</p>
         </div>
 
         <MapPin className="text-gray-400" size={24} />

@@ -90,11 +90,11 @@ const ColorDrawer = ({
 
       {/* Drawer */}
 
-      <div className="fixed right-0 top-0 h-full w-[420px] bg-white shadow-2xl z-50 flex flex-col">
+      <div className="fixed right-0 top-0 h-full w-full sm:w-[420px] sm:max-w-full bg-white shadow-2xl z-50 flex flex-col">
 
         {/* Header */}
 
-        <div className="flex items-center justify-between border-b p-6">
+        <div className="flex items-center justify-between border-b p-4 sm:p-6">
 
           <div>
 
@@ -120,7 +120,7 @@ const ColorDrawer = ({
 
         <form
           onSubmit={handleSubmit}
-          className="flex-1 overflow-auto p-6 space-y-6"
+          className="flex-1 overflow-auto p-4 sm:p-6 space-y-6"
         >
 
           {/* Color Picker */}
@@ -200,11 +200,11 @@ const ColorDrawer = ({
 
         {/* Footer */}
 
-        <div className="border-t p-6 flex justify-end gap-3">
+        <div className="border-t p-4 sm:p-6 flex flex-col-reverse sm:flex-row sm:justify-end gap-3">
 
           <button
             onClick={onClose}
-            className="px-5 py-2 rounded-xl border"
+            className="w-full sm:w-auto px-5 py-2.5 rounded-xl border"
           >
             Cancel
           </button>
@@ -212,7 +212,7 @@ const ColorDrawer = ({
           <button
             disabled={saving}
             onClick={handleSubmit}
-            className="px-5 py-2 rounded-xl bg-black text-white"
+            className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-black text-white disabled:opacity-50"
           >
             {saving
               ? "Saving..."

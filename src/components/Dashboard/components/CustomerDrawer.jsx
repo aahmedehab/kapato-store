@@ -12,15 +12,13 @@ const CustomerDrawer = ({ open, onClose, data }) => {
         className="fixed inset-0 bg-black/40 z-40"
       />
 
-      <div className="fixed right-0 top-0 h-full w-[520px] bg-white shadow-2xl z-50 flex flex-col">
+      <div className="fixed right-0 top-0 h-full w-full sm:w-[520px] sm:max-w-full bg-white shadow-2xl z-50 flex flex-col">
 
         {/* Header */}
 
-        <div className="p-6 border-b flex items-center justify-between">
-
-          <div>
-
-            <h2 className="text-2xl font-bold">
+        <div className="p-4 sm:p-6 border-b flex items-center justify-between gap-3">
+          <div className="min-w-0">
+            <h2 className="text-xl sm:text-2xl font-bold truncate">
               {customer.customer_name}
             </h2>
 
@@ -41,7 +39,7 @@ const CustomerDrawer = ({ open, onClose, data }) => {
 
         {/* Body */}
 
-        <div className="flex-1 overflow-y-auto p-6 space-y-8">
+        <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6 sm:space-y-8">
 
           {/* Info */}
 

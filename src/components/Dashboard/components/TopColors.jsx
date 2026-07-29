@@ -2,16 +2,11 @@ import { Palette } from "lucide-react";
 
 const TopColors = ({ colors }) => {
   return (
-    <div className="bg-white border rounded-2xl p-6 h-full">
-      <div className="flex items-center justify-between mb-6">
+    <div className="bg-white border rounded-xl sm:rounded-2xl p-4 sm:p-6 h-full">
+      <div className="flex items-center justify-between mb-4 sm:mb-6">
         <div>
-          <h2 className="text-xl font-semibold">
-            Top Colors
-          </h2>
-
-          <p className="text-sm text-gray-500">
-            Most ordered colors
-          </p>
+          <h2 className="text-lg sm:text-xl font-semibold">Top Colors</h2>
+          <p className="text-xs sm:text-sm text-gray-500">Most ordered colors</p>
         </div>
 
         <Palette className="text-gray-400" />
