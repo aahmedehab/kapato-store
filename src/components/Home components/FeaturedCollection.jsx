@@ -3,8 +3,30 @@ import { Link } from "react-router-dom";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
+
 const FeaturedCollection = () => {
   const [products, setProducts] = useState([]);
+  const [imagesMap, setImagesMap] = useState({});
+
+  useEffect(() => {
+  fetch("/images/images.json")
+    .then((res) => res.json())
+    .then(setImagesMap)
+    .catch(console.error);
+}, []);
+
+const getImage = (product) => {
+  if (!product.variants?.length) return "";
+
+  const variant = product.variants[0];
+  const key = `${product.folder_path}/${variant.folder_name}`;
+
+  const images = imagesMap[key] || [];
+
+  return images.length
+    ? `/images/${key}/${images[0]}`
+    : "";
+};
 
   useEffect(() => {
     fetch(`${API_URL}/api/products`)
@@ -46,7 +68,7 @@ const FeaturedCollection = () => {
             >
               <div className="aspect-square bg-white rounded-3xl overflow-hidden shadow-md border border-gray-100 group-hover:shadow-2xl transition-all duration-700">
                 <img
-                  src={`/images/${product.img}`}
+                  src={getImage(product)}
                   alt={product.name}
                   className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                 />
