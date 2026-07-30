@@ -113,6 +113,8 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Search } from 'lucide-react';
 
+import { getImages, getFirstImage } from "../../utils/images";
+
 const API_URL = import.meta.env.VITE_API_URL;
 
 const Shop = () => {
@@ -151,13 +153,13 @@ useEffect(() => {
 }, []);
 
 
-  const getImages = (product, variant) => {
-  const key = `${product.folder_path}/${variant.folder_name}`;
+//   const getImages = (product, variant) => {
+//   const key = `${product.folder_path}/${variant.folder_name}`;
 
-  return (imagesMap[key] || []).map(
-    (file) => `/images/${key}/${file}`
-  );
-};
+//   return (imagesMap[key] || []).map(
+//     (file) => `/images/${key}/${file}`
+//   );
+// };
 
 
   // لو All Collections → المنتجات العادية
@@ -166,16 +168,13 @@ const displayItems =
   filter === "collections"
     ? products.map((product) => ({
         ...product,
-        img:
-          product.variants?.length > 0
-            ? getImages(product, product.variants[0])[0] || ""
-            : "",
+img: getFirstImage(imagesMap, product),
       }))
     : products.flatMap((product) =>
         (product.variants || []).map((variant) => ({
           ...product,
           variantId: variant.id,
-          img: getImages(product, variant)[0] || "",
+          img: getImages(imagesMap, product, variant)[0] || "",
           color: variant.color?.name || "Default",
           sku: variant.sku,
           stock: variant.stock,

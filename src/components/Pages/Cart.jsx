@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { Trash2 } from 'lucide-react';
 import { ShoppingCart } from 'lucide-react';
 
+import { getImages, getFirstImage } from "../../utils/images";
+
 const Cart = () => {
   const { cart, removeFromCart, updateQuantity } = useCart();
 
