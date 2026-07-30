@@ -1,0 +1,54 @@
+{
+  "": [
+    "beach ocean.jpg",
+    "hero.png",
+    "palm tree.jpg"
+  ],
+  "caps/cactus/pink": [
+    "1.png"
+  ],
+  "caps/cactus/yellow": [
+    "1.png",
+    "2.png",
+    "3.png"
+  ],
+  "caps/original/walnut": [
+    "1.png",
+    "2.png",
+    "3.png",
+    "4.png"
+  ],
+  "caps/palm/pink": [
+    "1.png",
+    "2.png",
+    "3.png",
+    "4.png"
+  ],
+  "caps/palm/yellow": [
+    "1.png"
+  ],
+  "caps/star/blue": [
+    "1.png",
+    "2.png",
+    "3.png",
+    "4.png"
+  ],
+  "caps/star/burgundy": [
+    "1.png"
+  ],
+  "caps/sunny/blue": [
+    "1.png"
+  ],
+  "caps/sunny/burgundy": [
+    "1.png",
+    "2.png",
+    "3.png",
+    "4.png"
+  ],
+  "logo": [
+    "k logo primary.png",
+    "k logo secondary.png",
+    "kapato logo primary.png",
+    "kapato logo secondary.png"
+  ]
+}

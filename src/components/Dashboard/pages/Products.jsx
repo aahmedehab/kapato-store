@@ -14,6 +14,8 @@ const Products = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [drawerMode, setDrawerMode] = useState("view");
 
+  const [isAddOpen, setIsAddOpen] = useState(false);
+
   const fetchProducts = async () => {
     try {
       const res = await fetch(`${API_URL}/api/products`);
@@ -93,8 +95,12 @@ const Products = () => {
           </p>
         </div>
 
-        <button className="flex items-center justify-center gap-2 bg-black text-white px-4 py-2.5 rounded-xl text-sm font-medium hover:bg-gray-800 transition w-full sm:w-auto">
-          <Plus size={18} />
+        <button className="flex items-center justify-center gap-2 bg-black text-white px-4 py-2.5 rounded-xl text-sm font-medium hover:bg-gray-800 transition w-full sm:w-auto"
+        
+          onClick={() => setIsAddOpen(true)}
+        >
+          <Plus size={18} 
+          />
           Add Product
         </button>
       </div>

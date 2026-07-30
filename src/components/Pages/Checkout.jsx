@@ -224,7 +224,7 @@ navigate("/confirmation", {
             {cart.map((item) => (
               <div key={item.sku} className="flex gap-4 py-4 border-b last:border-none">
                 <div className="w-14 h-14 bg-white rounded-lg overflow-hidden border flex-shrink-0">
-                  <img src={`/images/${item.img}`} alt={item.name} className="w-full h-full object-cover" />
+                  <img src={item.img} alt={item.name} className="w-full h-full object-cover" />
                 </div>
                 <div className="flex-1 text-sm">
                   <p className="font-medium">{item.name}</p>

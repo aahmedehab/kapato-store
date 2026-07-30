@@ -3,8 +3,16 @@ import { X, Plus, Trash2 } from "lucide-react";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
-const ProductDrawer = ({ product, isOpen, onClose, mode = "view", onUpdated }) => {
-const [formData, setFormData] = useState({
+const ProductDrawer = ({
+  product,
+  isOpen,
+  onClose,
+  mode = "view",
+  onUpdated,
+  isAdd = false,
+}) => {
+  
+  const [formData, setFormData] = useState({
   name: "",
   slug: "",
   price: "",
@@ -17,6 +25,8 @@ const [formData, setFormData] = useState({
   const [colors, setColors] = useState([]);
   const [loading, setLoading] = useState(false);
 
+  const [imagesMap, setImagesMap] = useState({});
+
   // New variant form
 const [newVariant, setNewVariant] = useState({
   color_id: "",
@@ -25,19 +35,43 @@ const [newVariant, setNewVariant] = useState({
   stock: 0,
 });
 
-  useEffect(() => {
-    if (product && isOpen) {
-      setFormData({
-        name: product.name || "",
-        slug: product.slug || "",
-        price: product.price || "",
-        description: product.description || "",
-        folder_path: product.folder_path || "",
-        is_active: product.is_active ?? true,
-      });
-      setVariants(product.variants || []);
-    }
-  }, [product, isOpen]);
+useEffect(() => {
+  if (!isOpen) return;
+
+  if (isAdd) {
+    setFormData({
+      name: "",
+      slug: "",
+      price: "",
+      description: "",
+      folder_path: "",
+      is_active: true,
+    });
+
+    setVariants([]);
+    return;
+  }
+
+  if (product) {
+    setFormData({
+      name: product.name || "",
+      slug: product.slug || "",
+      price: product.price || "",
+      description: product.description || "",
+      folder_path: product.folder_path || "",
+      is_active: product.is_active ?? true,
+    });
+
+    setVariants(product.variants || []);
+  }
+}, [product, isOpen, isAdd]);
+
+useEffect(() => {
+  fetch("/images/images.json")
+    .then((res) => res.json())
+    .then((data) => setImagesMap(data))
+    .catch(console.error);
+}, []);
 
   // Fetch colors when drawer opens in edit mode
   useEffect(() => {
@@ -49,7 +83,7 @@ const [newVariant, setNewVariant] = useState({
     }
   }, [isOpen, mode]);
 
-  if (!isOpen || !product) return null;
+if (!isOpen) return null;
 
   const isEdit = mode === "edit";
 
@@ -60,6 +94,33 @@ const [newVariant, setNewVariant] = useState({
       [name]: type === "checkbox" ? checked : value,
     }));
   };
+
+  const handleAddProduct = async () => {
+  setLoading(true);
+
+  try {
+    const res = await fetch(`${API_URL}/api/products`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
+
+    if (!res.ok) {
+      alert("Failed to add product");
+      return;
+    }
+
+    onUpdated?.();
+    onClose();
+  } catch (err) {
+    console.error(err);
+    alert("Error adding product");
+  } finally {
+    setLoading(false);
+  }
+};
 
   const handleSaveProduct = async () => {
     setLoading(true);
@@ -174,6 +235,16 @@ if (
   }
 };
 
+const getImages = (variant) => {
+  const key = `${formData.folder_path}/${variant.folder_name}`;
+
+  return (
+    imagesMap[key]?.map(
+      (file) => `/images/${key}/${file}`
+    ) || []
+  );
+};
+
   return (
     <>
       <div className="fixed inset-0 bg-black/40 z-40" onClick={onClose} />
@@ -182,9 +253,13 @@ if (
         <div className="p-4 sm:p-6">
           {/* Header */}
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-bold">
-              {isEdit ? "Edit Product" : "Product Details"}
-            </h2>
+<h2 className="text-xl font-bold">
+  {isAdd
+    ? "Add Product"
+    : isEdit
+    ? "Edit Product"
+    : "Product Details"}
+</h2>
             <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-full">
               <X size={20} />
             </button>
@@ -193,17 +268,17 @@ if (
           {/* Image Preview */}
           <div className="mb-6">
             <div className="w-full aspect-square bg-gray-100 rounded-xl overflow-hidden">
-              {variants[0]?.images?.length > 0 ? (
-                <img
-src={`/images/${variants[0]?.images?.[0]?.image}`}
-                  alt={formData.name}
-                  className="w-full h-full object-cover"
-                />
-              ) : (
-                <div className="w-full h-full flex items-center justify-center text-gray-400">
-                  No Image
-                </div>
-              )}
+{variants.length > 0 && getImages(variants[0]).length > 0 ? (
+  <img
+    src={getImages(variants[0])[0]}
+    alt={formData.name}
+    className="w-full h-full object-cover"
+  />
+) : (
+  <div className="w-full h-full flex items-center justify-center text-gray-400">
+    No Image
+  </div>
+)}
             </div>
           </div>
 
@@ -211,16 +286,16 @@ src={`/images/${variants[0]?.images?.[0]?.image}`}
           <div className="space-y-4 mb-8">
             <div>
               <label className="text-sm text-gray-500">Name</label>
-              {isEdit ? (
-                <input
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  className="w-full border rounded-xl px-4 py-2.5 mt-1 text-sm"
-                />
-              ) : (
-                <p className="font-medium text-lg mt-1">{product.name}</p>
-              )}
+{mode === "view" ? (
+  <p className="font-medium text-lg mt-1">{product?.name}</p>
+) : (
+  <input
+    name="name"
+    value={formData.name}
+    onChange={handleChange}
+    className="w-full border rounded-xl px-4 py-2.5 mt-1 text-sm"
+  />
+)} 
             </div>
 
             <div>
@@ -329,22 +404,23 @@ src={`/images/${variants[0]?.images?.[0]?.image}`}
     Images
   </label>
 
-  <div className="flex gap-2 overflow-x-auto">
-    {variant.images?.length ? (
-      variant.images.map((img) => (
-        <img
-          key={img.id}
-          src={`/images/${img.image}`}
-          alt=""
-          className="w-16 h-16 rounded-lg border object-cover"
-        />
-      ))
-    ) : (
-      <div className="w-16 h-16 rounded-lg bg-gray-100 flex items-center justify-center text-xs text-gray-400">
-        No Images
-      </div>
-    )}
-  </div>
+<div className="flex gap-2 overflow-x-auto">
+  {getImages(variant).length ? (
+    getImages(variant).map((img) => (
+      <img
+        key={img}
+        src={img}
+        alt=""
+        className="w-16 h-16 rounded-lg border object-cover"
+      />
+    ))
+  ) : (
+    <div className="w-16 h-16 rounded-lg bg-gray-100 flex items-center justify-center text-xs text-gray-400">
+      No Images
+    </div>
+  )}
+</div>
+
 </div>
 
 

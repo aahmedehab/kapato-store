@@ -67,6 +67,14 @@ const [loading, setLoading] = useState(true);
 const [isAdding, setIsAdding] = useState(false);
 const [added, setAdded] = useState(false);
 
+const [imagesMap, setImagesMap] = useState({});
+
+useEffect(() => {
+  fetch("/images/images.json")
+    .then((res) => res.json())
+    .then(setImagesMap);
+}, []);
+
 useEffect(() => {
   const fetchProduct = async () => {
     try {
@@ -99,6 +107,18 @@ setVariants(data.variants);
   if (!product) return <div>Product not found</div>;
 
   const selectedVariant = variants[selectedColorIndex];
+
+  const images = selectedVariant
+  ? (
+      imagesMap[
+        `${product.folder_path}/${selectedVariant.folder_name}`
+      ] || []
+    ).map(
+      (file) =>
+        `/images/${product.folder_path}/${selectedVariant.folder_name}/${file}`
+    )
+  : [];
+
   const subtotal = product.price * quantity;
 
   const handleCopySku = async () => {
@@ -113,13 +133,13 @@ setVariants(data.variants);
 
 const handleNextImage = () => {
   setSelectedImageIndex((prev) =>
-    prev === selectedVariant.images.length - 1 ? 0 : prev + 1
+    prev === images.length - 1 ? 0 : prev + 1
   );
 };
 
 const handlePrevImage = () => {
   setSelectedImageIndex((prev) =>
-    prev === 0 ? selectedVariant.images.length - 1 : prev - 1
+    prev === 0 ? images.length - 1 : prev - 1
   );
 };
 
@@ -129,7 +149,7 @@ const handlePrevImage = () => {
     name: product.name,
     price: product.price,
     sku: selectedVariant.sku,
-img: selectedVariant.images?.[selectedImageIndex]?.image,
+img: images[selectedImageIndex],
     color: selectedVariant.color.name,
     hexCode: selectedVariant.color.hex_code,
     quantity,
@@ -170,7 +190,7 @@ const handleAddToCart = () => {
         <div className="space-y-4 sm:space-y-5">
           <div className="bg-secondary rounded-xl sm:rounded-2xl overflow-hidden relative aspect-square flex items-center justify-center">
             <img
-  src={`/images/${selectedVariant?.images?.[selectedImageIndex]?.image}`}
+src={images[selectedImageIndex]}
   alt={product.name}
   className="w-full h-full object-cover"
 />
@@ -193,9 +213,9 @@ const handleAddToCart = () => {
           </div>
 
           <div className="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1">
-{selectedVariant?.images?.map((image, i) => (
+{images.map((image, i) => (
   <button
-    key={image.id}
+    key={image}
     onClick={() => setSelectedImageIndex(i)}
     className={`w-14 h-14 sm:w-[72px] sm:h-[72px]
       rounded-xl overflow-hidden border-2
@@ -206,7 +226,7 @@ const handleAddToCart = () => {
       }`}
   >
     <img
-      src={`/images/${image.image}`}
+      src={image}
       className="w-full h-full object-cover"
     />
   </button>

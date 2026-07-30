@@ -121,6 +121,9 @@ const Shop = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filter, setFilter] = useState('collections'); // 'collections' | 'all'
 
+  const [imagesMap, setImagesMap] = useState({});
+const [imagesLoaded, setImagesLoaded] = useState(false);
+
   useEffect(() => {
     fetch(`${API_URL}/api/products`)
       .then(res => res.json())
@@ -134,16 +137,45 @@ const Shop = () => {
       });
   }, []);
 
+useEffect(() => {
+  fetch("/images/images.json")
+    .then((res) => res.json())
+    .then((data) => {
+      setImagesMap(data);
+      setImagesLoaded(true);
+    })
+    .catch((err) => {
+      console.error(err);
+      setImagesLoaded(true);
+    });
+}, []);
+
+
+  const getImages = (product, variant) => {
+  const key = `${product.folder_path}/${variant.folder_name}`;
+
+  return (imagesMap[key] || []).map(
+    (file) => `/images/${key}/${file}`
+  );
+};
+
+
   // لو All Collections → المنتجات العادية
   // لو All Products → نفرد الـ variants
 const displayItems =
   filter === "collections"
-    ? products
+    ? products.map((product) => ({
+        ...product,
+        img:
+          product.variants?.length > 0
+            ? getImages(product, product.variants[0])[0] || ""
+            : "",
+      }))
     : products.flatMap((product) =>
         (product.variants || []).map((variant) => ({
           ...product,
           variantId: variant.id,
-          img: variant.images?.[0]?.image || "",
+          img: getImages(product, variant)[0] || "",
           color: variant.color?.name || "Default",
           sku: variant.sku,
           stock: variant.stock,
@@ -157,13 +189,13 @@ const displayItems =
     item.sku?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  if (loading) {
-    return (
-      <div className="text-center py-20 text-xl bg-secondary-30">
-        Loading products...
-      </div>
-    );
-  }
+if (loading || !imagesLoaded) {
+  return (
+    <div className="text-center py-20">
+      Loading products...
+    </div>
+  );
+}
 
   return (
     <div className="min-h-screen bg-secondary-30">
@@ -216,7 +248,7 @@ const displayItems =
               <div className="bg-secondary rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300">
                 <div className="aspect-[4/4] bg-gray-100 overflow-hidden">
                   <img
-                    src={`/images/${item.img}`}
+                    src={item.img}
                     alt={item.name}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   />
