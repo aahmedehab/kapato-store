@@ -111,22 +111,16 @@ setVariants(data.variants);
     }
   };
 
-const handlePrevImage = () => {
-  const newIndex =
-    selectedColorIndex === 0
-      ? variants.length - 1
-      : selectedColorIndex - 1;
-
-  changeVariant(newIndex);
+const handleNextImage = () => {
+  setSelectedImageIndex((prev) =>
+    prev === selectedVariant.images.length - 1 ? 0 : prev + 1
+  );
 };
 
-const handleNextImage = () => {
-  const newIndex =
-    selectedColorIndex === variants.length - 1
-      ? 0
-      : selectedColorIndex + 1;
-
-  changeVariant(newIndex);
+const handlePrevImage = () => {
+  setSelectedImageIndex((prev) =>
+    prev === 0 ? selectedVariant.images.length - 1 : prev - 1
+  );
 };
 
   const buildCartItem = () => ({
@@ -135,7 +129,7 @@ const handleNextImage = () => {
     name: product.name,
     price: product.price,
     sku: selectedVariant.sku,
-    img: `/images/${selectedVariant.image}`,
+img: selectedVariant.images?.[selectedImageIndex]?.image,
     color: selectedVariant.color.name,
     hexCode: selectedVariant.color.hex_code,
     quantity,
@@ -165,7 +159,7 @@ const handleAddToCart = () => {
 
   const changeVariant = (index) => {
   setSelectedColorIndex(index);
-  setSelectedImageIndex(index);
+  setSelectedImageIndex(0);
 };
 
   return (
@@ -176,10 +170,10 @@ const handleAddToCart = () => {
         <div className="space-y-4 sm:space-y-5">
           <div className="bg-secondary rounded-xl sm:rounded-2xl overflow-hidden relative aspect-square flex items-center justify-center">
             <img
-              src={`/images/${selectedVariant?.image}`}
-              alt={product.name}
-              className="w-full h-full object-cover"
-            />
+  src={`/images/${selectedVariant?.images?.[selectedImageIndex]?.image}`}
+  alt={product.name}
+  className="w-full h-full object-cover"
+/>
             <button
               type="button"
               onClick={handlePrevImage}
@@ -199,24 +193,24 @@ const handleAddToCart = () => {
           </div>
 
           <div className="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1">
-            {variants.map((variant, i) => (
-              <button
-                key={variant.sku}
-                type="button"
-onClick={() => changeVariant(i)}  
-                className={`w-14 h-14 sm:w-[72px] sm:h-[72px] bg-[#F3F4F6] rounded-lg sm:rounded-xl overflow-hidden flex-shrink-0 border-2 transition ${
-                  selectedImageIndex === i
-                    ? 'border-primary '
-                    : 'border-transparent hover:border-gray-300'
-                }`}
-              >
-                <img
-                  src={`/images/${variant.image}`}
-                  alt=""
-                  className="w-full h-full object-contain "
-                />
-              </button>
-            ))}
+{selectedVariant?.images?.map((image, i) => (
+  <button
+    key={image.id}
+    onClick={() => setSelectedImageIndex(i)}
+    className={`w-14 h-14 sm:w-[72px] sm:h-[72px]
+      rounded-xl overflow-hidden border-2
+      ${
+        selectedImageIndex === i
+          ? "border-primary"
+          : "border-transparent"
+      }`}
+  >
+    <img
+      src={`/images/${image.image}`}
+      className="w-full h-full object-cover"
+    />
+  </button>
+))}
           </div>
 
           <div className="grid grid-cols-1 min-[480px]:grid-cols-2 gap-3 sm:gap-4 pt-1 sm:pt-2">

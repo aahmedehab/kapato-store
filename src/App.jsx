@@ -29,13 +29,14 @@ function App() {
 
   const isHome = location.pathname === "/";
   const isCheckout = location.pathname === "/checkout";
+  const isConfirmation = location.pathname === "/confirmation";
   const isDashboard = location.pathname.startsWith("/dashboard");
 
   return (
     <div className="min-h-screen bg-[#ffffff]">
       <ScrollToTop />
 
-      {!isCheckout && !isDashboard && <Nav overlay={isHome} />}
+      {!isCheckout && !isConfirmation && !isDashboard && <Nav overlay={isHome} />}
 
       <Routes>
         <Route path="/" element={<Home />} />

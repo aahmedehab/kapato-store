@@ -27,7 +27,7 @@ const Hero = () => {
     <div className="relative min-h-[580px] md:min-h-[650px] lg:min-h-[720px] flex items-center overflow-hidden bg-secondary">
       {/* Background Image */}
       <img 
-        src="/images/hero2.jpg"   // ← Replace with your actual image path
+        src="/images/hero.png"   // ← Replace with your actual image path
         alt="Woman wearing blue cap" 
         className="absolute inset-0 w-full h-full object-cover"
       />

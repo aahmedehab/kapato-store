@@ -4,26 +4,26 @@ import { X, Plus, Trash2 } from "lucide-react";
 const API_URL = import.meta.env.VITE_API_URL;
 
 const ProductDrawer = ({ product, isOpen, onClose, mode = "view", onUpdated }) => {
-  const [formData, setFormData] = useState({
-    name: "",
-    slug: "",
-    price: "",
-    description: "",
-    img: "",
-    is_active: true,
-  });
+const [formData, setFormData] = useState({
+  name: "",
+  slug: "",
+  price: "",
+  description: "",
+  folder_path: "",
+  is_active: true,
+});
 
   const [variants, setVariants] = useState([]);
   const [colors, setColors] = useState([]);
   const [loading, setLoading] = useState(false);
 
   // New variant form
-  const [newVariant, setNewVariant] = useState({
-    color_id: "",
-    sku: "",
-    image: "",
-    stock: 0,
-  });
+const [newVariant, setNewVariant] = useState({
+  color_id: "",
+  sku: "",
+  folder_name: "",
+  stock: 0,
+});
 
   useEffect(() => {
     if (product && isOpen) {
@@ -32,7 +32,7 @@ const ProductDrawer = ({ product, isOpen, onClose, mode = "view", onUpdated }) =
         slug: product.slug || "",
         price: product.price || "",
         description: product.description || "",
-        img: product.img || "",
+        folder_path: product.folder_path || "",
         is_active: product.is_active ?? true,
       });
       setVariants(product.variants || []);
@@ -85,10 +85,14 @@ const ProductDrawer = ({ product, isOpen, onClose, mode = "view", onUpdated }) =
   };
 
   const handleAddVariant = async () => {
-    if (!newVariant.color_id || !newVariant.sku) {
-      alert("Color and SKU are required");
-      return;
-    }
+if (
+  !newVariant.color_id ||
+  !newVariant.sku ||
+  !newVariant.folder_name
+) {
+  alert("Color, SKU and Folder Name are required");
+  return;
+}
 
     try {
       const res = await fetch(`${API_URL}/api/products/variants`, {
@@ -106,7 +110,12 @@ const ProductDrawer = ({ product, isOpen, onClose, mode = "view", onUpdated }) =
         // نضيف اللون مع الـ variant عشان يظهر الاسم
         const color = colors.find((c) => c.id === Number(newVariant.color_id));
         setVariants((prev) => [...prev, { ...created, color }]);
-        setNewVariant({ color_id: "", sku: "", image: "", stock: 0 });
+        setNewVariant({
+  color_id: "",
+  sku: "",
+  folder_name: "",
+  stock: 0,
+});
       } else {
         alert("Failed to add variant");
       }
@@ -134,6 +143,37 @@ const ProductDrawer = ({ product, isOpen, onClose, mode = "view", onUpdated }) =
     }
   };
 
+  const handleSaveVariant = async (variant) => {
+  try {
+    const res = await fetch(
+      `${API_URL}/api/products/variants/${variant.id}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          sku: variant.sku,
+          folder_name: variant.folder_name,
+          stock: variant.stock,
+          color_id: variant.color_id,
+        }),
+      }
+    );
+
+    if (!res.ok) {
+      alert("Failed to update variant");
+      return;
+    }
+
+    onUpdated?.();
+    alert("Variant updated successfully");
+  } catch (err) {
+    console.error(err);
+    alert("Error updating variant");
+  }
+};
+
   return (
     <>
       <div className="fixed inset-0 bg-black/40 z-40" onClick={onClose} />
@@ -153,9 +193,9 @@ const ProductDrawer = ({ product, isOpen, onClose, mode = "view", onUpdated }) =
           {/* Image Preview */}
           <div className="mb-6">
             <div className="w-full aspect-square bg-gray-100 rounded-xl overflow-hidden">
-              {formData.img ? (
+              {variants[0]?.images?.length > 0 ? (
                 <img
-                  src={`/images/${formData.img}`}
+src={`/images/${variants[0]?.images?.[0]?.image}`}
                   alt={formData.name}
                   className="w-full h-full object-cover"
                 />
@@ -212,20 +252,19 @@ const ProductDrawer = ({ product, isOpen, onClose, mode = "view", onUpdated }) =
               )}
             </div>
 
-            <div>
-              <label className="text-sm text-gray-500">Image filename</label>
-              {isEdit ? (
-                <input
-                  name="img"
-                  value={formData.img}
-                  onChange={handleChange}
-                  placeholder="e.g. caps/cactus/orange.png"
-                  className="w-full border rounded-xl px-4 py-2.5 mt-1 text-sm"
-                />
-              ) : (
-                <p className="text-sm mt-1 text-gray-700">{product.img}</p>
-              )}
-            </div>
+<div>
+  <label className="text-sm text-gray-500">
+    Folder Path
+  </label>
+
+  <input
+    name="folder_path"
+    value={formData.folder_path}
+    onChange={handleChange}
+    placeholder="caps/sunny"
+    className="w-full border rounded-xl px-4 py-2.5 mt-1 text-sm"
+  />
+</div>
 
             <div>
               <label className="text-sm text-gray-500">Description</label>
@@ -280,40 +319,143 @@ const ProductDrawer = ({ product, isOpen, onClose, mode = "view", onUpdated }) =
               {variants.map((variant) => (
                 <div
                   key={variant.id}
-                  className="border rounded-xl p-4 flex items-center gap-4"
+                  className="border rounded-xl p-4 space-y-4"
                 >
-                  <div className="w-14 h-14 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
-                    {variant.image ? (
-                      <img
-                        src={`/images/${variant.image}`}
-                        alt=""
-                        className="w-full h-full object-cover"
-                      />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center text-xs text-gray-400">
-                        No img
-                      </div>
-                    )}
-                  </div>
-                  <div className="flex-1">
-                    <p className="font-medium text-sm">
-                      {variant.color?.name || "No color"}
-                    </p>
-                    <p className="text-xs text-gray-500 mt-0.5">
-                      SKU: {variant.sku}
-                    </p>
-                    <p className="text-xs text-gray-500">
-                      Stock: {variant.stock ?? "-"}
-                    </p>
-                  </div>
-                  {isEdit && (
-                    <button
-                      onClick={() => handleDeleteVariant(variant.id)}
-                      className="p-2 text-red-500 hover:bg-red-50 rounded-lg"
-                    >
-                      <Trash2 size={16} />
-                    </button>
-                  )}
+<div>
+  <p className="font-medium mb-3">
+    {variant.color?.name}
+  </p>
+  <label className="block text-xs text-gray-500 mb-2">
+    Images
+  </label>
+
+  <div className="flex gap-2 overflow-x-auto">
+    {variant.images?.length ? (
+      variant.images.map((img) => (
+        <img
+          key={img.id}
+          src={`/images/${img.image}`}
+          alt=""
+          className="w-16 h-16 rounded-lg border object-cover"
+        />
+      ))
+    ) : (
+      <div className="w-16 h-16 rounded-lg bg-gray-100 flex items-center justify-center text-xs text-gray-400">
+        No Images
+      </div>
+    )}
+  </div>
+</div>
+
+
+<div className="flex-1">
+
+
+  {isEdit ? (
+    <div className="space-y-3">
+
+      <div>
+        <label className="block text-xs text-gray-500 mb-1">
+          SKU
+        </label>
+
+        <input
+          value={variant.sku}
+          onChange={(e) =>
+            setVariants((prev) =>
+              prev.map((v) =>
+                v.id === variant.id
+                  ? { ...v, sku: e.target.value }
+                  : v
+              )
+            )
+          }
+          className="w-full border rounded-lg px-3 py-2 text-sm"
+        />
+      </div>
+
+      <div>
+        <label className="block text-xs text-gray-500 mb-1">
+          Folder Name
+        </label>
+
+        <input
+          value={variant.folder_name}
+          onChange={(e) =>
+            setVariants((prev) =>
+              prev.map((v) =>
+                v.id === variant.id
+                  ? { ...v, folder_name: e.target.value }
+                  : v
+              )
+            )
+          }
+          className="w-full border rounded-lg px-3 py-2 text-sm"
+        />
+      </div>
+
+      <div>
+        <label className="block text-xs text-gray-500 mb-1">
+          Stock
+        </label>
+
+        <input
+          type="number"
+          value={variant.stock}
+          onChange={(e) =>
+            setVariants((prev) =>
+              prev.map((v) =>
+                v.id === variant.id
+                  ? {
+                      ...v,
+                      stock: Number(e.target.value),
+                    }
+                  : v
+              )
+            )
+          }
+          className="w-full border rounded-lg px-3 py-2 text-sm"
+        />
+      </div>
+
+    </div>
+  ) : (
+    <>
+      <p className="text-xs text-gray-500">
+        SKU: {variant.sku}
+      </p>
+
+      <p className="text-xs text-gray-500">
+        Folder: {variant.folder_name}
+      </p>
+
+      <p className="text-xs text-gray-500">
+        Stock: {variant.stock}
+      </p>
+    </>
+  )}
+
+</div>
+
+{isEdit && (
+  <div className="flex items-end gap-2 mt-3">
+
+    <button
+      onClick={() => handleSaveVariant(variant)}
+      className="flex-1 px-4 py-2 bg-black text-white rounded-lg text-sm hover:bg-gray-800"
+    >
+      Save
+    </button>
+
+    <button
+      onClick={() => handleDeleteVariant(variant.id)}
+      className="w-10 h-10 flex items-center justify-center rounded-lg border border-red-300 text-red-500 hover:bg-red-50"
+    >
+      <Trash2 size={16} />
+    </button>
+
+  </div>
+)}
                 </div>
               ))}
             </div>
@@ -347,14 +489,17 @@ const ProductDrawer = ({ product, isOpen, onClose, mode = "view", onUpdated }) =
                   className="w-full border rounded-lg px-3 py-2 text-sm"
                 />
 
-                <input
-                  placeholder="Image (e.g. caps/cactus/orange.png)"
-                  value={newVariant.image}
-                  onChange={(e) =>
-                    setNewVariant({ ...newVariant, image: e.target.value })
-                  }
-                  className="w-full border rounded-lg px-3 py-2 text-sm"
-                />
+<input
+  placeholder="Folder Name (e.g. blue)"
+  value={newVariant.folder_name}
+  onChange={(e) =>
+    setNewVariant({
+      ...newVariant,
+      folder_name: e.target.value,
+    })
+  }
+  className="w-full border rounded-lg px-3 py-2 text-sm"
+/>
 
                 <input
                   type="number"

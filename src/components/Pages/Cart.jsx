@@ -50,7 +50,7 @@ const Cart = () => {
             <div key={item.sku} className="flex gap-6 bg-secondary-50 p-6 rounded-2xl border">
               <div className="w-28 h-28 bg-gray-100 rounded-xl overflow-hidden flex-shrink-0">
                 <img
-                  src={item.img}
+                  src={`/images/${item.img}`}
                   alt={item.name}
                   className="w-full h-full object-cover"
                 />

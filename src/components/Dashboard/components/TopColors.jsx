@@ -27,7 +27,7 @@ const TopColors = ({ colors }) => {
                 <div
                   className="w-5 h-5 rounded-full border"
                   style={{
-                    background: color.color,
+                    backgroundColor: color.hex_code,
                   }}
                 />
 

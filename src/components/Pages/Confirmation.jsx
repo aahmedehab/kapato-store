@@ -122,7 +122,7 @@ const Confirmation = () => {
                     <div className="relative">
                       <div className="w-16 h-16 bg-white rounded-xl overflow-hidden border">
                         <img
-                          src={item.img}
+                          src={`/images/${item.img}`}
                           alt={item.name}
                           className="w-full h-full object-cover"
                         />
