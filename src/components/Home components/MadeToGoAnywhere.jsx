@@ -38,13 +38,13 @@ const MadeToGoAnywhere = () => {
 
           {/* Logo - Hidden on very small screens, visible from md */}
           <div className="hidden md:flex items-center justify-center mt-12 lg:mt-auto">
-            <div className="w-24 h-24 bg-secondary rounded-full flex items-center justify-center shadow-inner">
+            {/* <div className="w-24 h-24 bg-secondary rounded-full flex items-center justify-center shadow-inner">
     <img
       src="/images/logo/k logo primary.png"
       alt="KAPATO Logo"
       className="w-16 h-16 object-contain"
     />
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

@@ -33,14 +33,17 @@ const AboutSection = () => {
           </div>
 
           <p className="text-lg text-secondary lg:text-primary leading-relaxed">
-            KAPATO is a tribute to sun, sea, and the freedom in between.
+            We make everyday pieces with personality.
+          </p>
+          <p className="text-lg text-secondary lg:text-primary leading-relaxed">
+            Different colors, different details, different ways to wear them.
           </p>
 
           <p className="mt-4 text-lg text-secondary lg:text-primary leading-relaxed">
-            We create timeless caps for those who chase the sun.
+            Made to fit your day, your style, and whatever comes next.
           </p>
 
-          <a
+          {/* <a
             href="/our-story"
             className="mt-10 inline-flex items-center gap-3 text-primary hover:text-primary-dark font-medium group"
           >
@@ -48,7 +51,7 @@ const AboutSection = () => {
             <span className="text-xl group-hover:translate-x-2 transition-transform">
               →
             </span>
-          </a>
+          </a> */}
 
         </div>
       </div>

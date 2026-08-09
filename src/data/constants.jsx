@@ -1,9 +1,8 @@
 export const PRODUCT_DESCRIPTIONS = {
   WASHED_CAP: (
     <p>
-      Offer a <strong>vintage look</strong> with a Washed Cap,
-      customized easily with <strong>embroidery on demand</strong>.
-      Use Printlet for seamless production and fast fulfillment.
+      Offer a <strong>cool look</strong> with a Washed Cap,
+      customized for you
     </p>
   ),
 

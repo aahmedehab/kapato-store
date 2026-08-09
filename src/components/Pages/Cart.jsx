@@ -9,7 +9,7 @@ const Cart = () => {
   const { cart, removeFromCart, updateQuantity } = useCart();
 
   const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  const shipping = 85;
+  const shipping = 60;
   const total = subtotal + shipping;
 
   if (cart.length === 0) {

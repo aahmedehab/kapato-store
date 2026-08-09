@@ -234,7 +234,7 @@ src={images[selectedImageIndex]}
           </div>
 
           <div className="grid grid-cols-1 min-[480px]:grid-cols-2 gap-3 sm:gap-4 pt-1 sm:pt-2">
-            <div className="border border-gray-200 rounded-xl p-4 sm:p-5 bg-secondary-50">
+            {/* <div className="border border-gray-200 rounded-xl p-4 sm:p-5 bg-secondary-50">
               <p className="text-sm font-semibold text-gray-900 mb-1.5 sm:mb-2">
                 Production time
               </p>
@@ -242,17 +242,17 @@ src={images[selectedImageIndex]}
               <p className="text-xs text-gray-500 leading-relaxed">
                 Standard production timeline for this item
               </p>
-            </div>
+            </div> */}
             <div className="border border-gray-200 rounded-xl p-4 sm:p-5 bg-secondary-50">
               <p className="text-sm font-semibold text-gray-900 mb-1.5 sm:mb-2">
                 Delivery time
               </p>
               <p className="text-base sm:text-lg font-bold text-pink-500 mb-1">
-                1-2 Working days
+                Within 3-5 Working days
               </p>
-              <p className="text-xs text-gray-500 leading-relaxed">
+              {/* <p className="text-xs text-gray-500 leading-relaxed">
                 For orders outside Greater Cairo
-              </p>
+              </p> */}
             </div>
           </div>
         </div>
@@ -319,12 +319,12 @@ onClick={() => changeVariant(i)}
           <div>
             <div className="flex flex-wrap justify-between items-center gap-2 mb-3">
               <p className="font-semibold text-gray-900">Quantity</p>
-              <button
+              {/* <button
                 type="button"
                 className="text-xs sm:text-sm text-pink-500 hover:text-pink-600 font-medium"
               >
                 Quantity discounts
-              </button>
+              </button> */}
             </div>
             <div className="inline-flex items-center border border-gray-200 rounded-xl overflow-hidden">
               <button
@@ -410,7 +410,7 @@ onClick={() => changeVariant(i)}
             </button>
           </div>
 
-          <div className="border border-yellow-300 bg-yellow-50 rounded-xl px-4 sm:px-5 py-3.5 sm:py-4 flex items-start gap-3">
+          {/* <div className="border border-yellow-300 bg-yellow-50 rounded-xl px-4 sm:px-5 py-3.5 sm:py-4 flex items-start gap-3">
             <Crown size={18} className="text-yellow-600 flex-shrink-0 mt-0.5" />
             <div>
               <p className="font-semibold text-gray-900 text-sm">
@@ -420,7 +420,7 @@ onClick={() => changeVariant(i)}
                 Join now and unlock exclusive discounts on this product.
               </p>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
 

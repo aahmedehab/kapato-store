@@ -16,13 +16,13 @@ const { cart, clearCart } = useCart();
     address: '',
     apartment: '',
     city: '',
-    governorate: 'Cairo',
+    governorate: '',
     postalCode: '',
     phone: '',
   });
   
   const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  const shipping = 85;
+  const shipping = 60;
   const total = subtotal + shipping;
 
   const handleChange = (e) => {

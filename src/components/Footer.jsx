@@ -48,44 +48,25 @@ const Footer = () => {
     alt="KAPATO Logo"
     className="h-8 md:h-10 w-auto"
   />            <p className="mt-4 text-sm text-secondary-70">
-              © 2024 KAPATO<br />
+              © 2026 KAPATO<br />
               All rights reserved.
             </p>
           </div>
 
           {/* SHOP */}
           <div className="md:col-span-2">
-            <h3 className="font-medium mb-4 text-secondary-90">SHOP</h3>
+            <h3 className="font-medium mb-4 text-secondary-90">Quick links</h3>
             <ul className="space-y-3 text-sm text-secondary-70">
+              <li><Link to="/" className="hover:text-secondary transition">Home</Link></li>
               <li><Link to="/shop" className="hover:text-secondary transition">All Caps</Link></li>
-              <li><Link to="/shop" className="hover:text-secondary transition">Best Sellers</Link></li>
-              <li><Link to="/shop" className="hover:text-secondary transition">New Arrivals</Link></li>
-            </ul>
-          </div>
-
-          {/* COMPANY */}
-          <div className="md:col-span-2">
-            <h3 className="font-medium mb-4 text-secondary-90">COMPANY</h3>
-            <ul className="space-y-3 text-sm text-secondary-70">
-              <li><Link to="/about" className="hover:text-secondary transition">About</Link></li>
-              <li><Link to="/story" className="hover:text-secondary transition">Our Story</Link></li>
               <li><Link to="/contact" className="hover:text-secondary transition">Contact</Link></li>
-            </ul>
-          </div>
-
-          {/* HELP */}
-          <div className="md:col-span-2">
-            <h3 className="font-medium mb-4 text-secondary-90">HELP</h3>
-            <ul className="space-y-3 text-sm text-secondary-70">
-              <li><Link to="/faq" className="hover:text-secondary transition">FAQs</Link></li>
-              <li><Link to="/shipping" className="hover:text-secondary transition">Shipping</Link></li>
-              <li><Link to="/returns" className="hover:text-secondary transition">Returns</Link></li>
+              <li><Link to="/returns" className="hover:text-secondary transition">Shipping & Returns</Link></li>
             </ul>
           </div>
 
           {/* Newsletter */}
           <div className="md:col-span-3">
-            <h3 className="font-medium mb-4 text-secondary-90">STAY IN THE LOOP</h3>
+            {/* <h3 className="font-medium mb-4 text-secondary-90">STAY IN THE LOOP</h3>
             <p className="text-sm text-secondary-70 mb-4">
               Get early access to new drops and good vibes.
             </p>
@@ -99,14 +80,39 @@ const Footer = () => {
               <button className="absolute right-2 top-1/2 -translate-y-1/2 bg-secondary text-primary p-2.5 rounded-full hover:bg-gray-100 transition">
                 →
               </button>
-            </div>
+            </div> */}
 
             {/* Social Icons */}
-            <div className="flex gap-5 mt-10">
-              <a href="#" className="text-2xl hover:text-secondary-70 transition"><FaInstagram /></a>
-              <a href="#" className="text-2xl hover:text-secondary-70 transition"><FaFacebookF /></a>
-              <a href="#" className="text-2xl hover:text-secondary-70 transition"><FaTiktok /></a>
-            </div>
+<div className="flex gap-5 mt-10">
+  <a
+    href="https://www.instagram.com/kapato.eg/"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="text-2xl hover:text-secondary-70 transition"
+  >
+    <FaInstagram />
+  </a>
+
+  <a
+    href="https://www.facebook.com/profile.php?id=61591827751364"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="text-2xl hover:text-secondary-70 transition"
+  >
+    <FaFacebookF />
+  </a>
+
+  <a
+    href="https://www.tiktok.com/@kapato.eg?_r=1&_t=ZS-98kQGV6gStM"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="text-2xl hover:text-secondary-70 transition"
+  >
+    <FaTiktok />
+  </a>
+</div>
+
+
           </div>
         </div>
       </div>
