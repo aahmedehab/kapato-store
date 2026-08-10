@@ -16,60 +16,153 @@ const Products = () => {
 
   const [isAddOpen, setIsAddOpen] = useState(false);
 
-  const fetchProducts = async () => {
-    try {
-      const res = await fetch(`${API_URL}/api/products`);
+  const [imagesMap, setImagesMap] = useState({});
+
+  useEffect(() => {
+  fetch("/images/images.json")
+    .then((res) => res.json())
+    .then((data) => setImagesMap(data))
+    .catch(console.error);
+}, []);
+
+const getProductImage = (product) => {
+  const variant = product.variants?.[0];
+
+  if (!variant || !product.folder_path) {
+    return null;
+  }
+
+  const key = `${product.folder_path}/${variant.folder_name}`;
+
+  const files = imagesMap[key];
+
+  if (!files || files.length === 0) {
+    return null;
+  }
+
+  return `/images/${key}/${files[0]}`;
+};
+
+const fetchProducts = async () => {
+  try {
+    const token = localStorage.getItem("adminToken");
+
+    const res = await fetch(`${API_URL}/api/products`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (res.status === 401) {
+      localStorage.removeItem("adminToken");
+      window.location.href = "/admin/login";
+      return;
+    }
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data.message || "Failed to fetch products");
+    }
+
+    setProducts(data);
+  } catch (err) {
+    console.error(err);
+  } finally {
+    setLoading(false);
+  }
+};
+
+const handleDelete = async (id) => {
+  if (!window.confirm("Are you sure you want to delete this product?")) return;
+
+  try {
+    const token = localStorage.getItem("adminToken");
+
+    const res = await fetch(`${API_URL}/api/products/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (res.status === 401) {
+      localStorage.removeItem("adminToken");
+      window.location.href = "/admin/login";
+      return;
+    }
+
+    if (res.ok) {
+      setProducts((prev) => prev.filter((p) => p.id !== id));
+    } else {
       const data = await res.json();
-      setProducts(data);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoading(false);
+      alert(data.message || "Failed to delete product");
     }
-  };
+  } catch (err) {
+    console.error(err);
+    alert("Error deleting product");
+  }
+};
 
-  const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this product?")) return;
+const openView = async (id) => {
+  try {
+    const token = localStorage.getItem("adminToken");
 
-    try {
-      const res = await fetch(`${API_URL}/api/products/${id}`, {
-        method: "DELETE",
-      });
+    const res = await fetch(`${API_URL}/api/products/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
-      if (res.ok) {
-        setProducts((prev) => prev.filter((p) => p.id !== id));
-      } else {
-        alert("Failed to delete product");
-      }
-    } catch (err) {
-      console.error(err);
-      alert("Error deleting product");
+    if (res.status === 401) {
+      localStorage.removeItem("adminToken");
+      window.location.href = "/admin/login";
+      return;
     }
-  };
 
-  const openView = async (id) => {
-    try {
-      const res = await fetch(`${API_URL}/api/products/${id}`);
-      const data = await res.json();
-      setSelectedProduct(data);
-      setDrawerMode("view");
-      setIsDrawerOpen(true);
-    } catch (err) {
-      console.error(err);
-    }
-  };
+    const data = await res.json();
 
-  const openEdit = async (id) => {
-    try {
-      const res = await fetch(`${API_URL}/api/products/${id}`);
-      const data = await res.json();
-      setSelectedProduct(data);
-      setDrawerMode("edit");
-      setIsDrawerOpen(true);
-    } catch (err) {
-      console.error(err);
+    if (!res.ok) {
+      throw new Error(data.message || "Failed to fetch product");
     }
-  };
+
+    setSelectedProduct(data);
+    setDrawerMode("view");
+    setIsDrawerOpen(true);
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+const openEdit = async (id) => {
+  try {
+    const token = localStorage.getItem("adminToken");
+
+    const res = await fetch(`${API_URL}/api/products/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (res.status === 401) {
+      localStorage.removeItem("adminToken");
+      window.location.href = "/admin/login";
+      return;
+    }
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data.message || "Failed to fetch product");
+    }
+
+    setSelectedProduct(data);
+    setDrawerMode("edit");
+    setIsDrawerOpen(true);
+  } catch (err) {
+    console.error(err);
+  }
+};
 
   useEffect(() => {
     fetchProducts();
@@ -135,19 +228,19 @@ const Products = () => {
                 className="bg-white border rounded-xl p-4"
               >
                 <div className="flex gap-3">
-                  <div className="w-16 h-16 bg-gray-100 rounded-lg overflow-hidden shrink-0">
-                    {product.img ? (
-                      <img
-                        src={`/images/${product.img}`}
-                        alt={product.name}
-                        className="w-full h-full object-cover"
-                      />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center text-gray-400 text-xs">
-                        No img
-                      </div>
-                    )}
-                  </div>
+<div className="w-16 h-16 bg-gray-100 rounded-lg overflow-hidden shrink-0">
+  {getProductImage(product) ? (
+    <img
+      src={getProductImage(product)}
+      alt={product.name}
+      className="w-full h-full object-cover"
+    />
+  ) : (
+    <div className="w-full h-full flex items-center justify-center text-gray-400 text-xs">
+      No img
+    </div>
+  )}
+</div>
 
                   <div className="flex-1 min-w-0">
                     <p className="font-medium truncate">{product.name}</p>
@@ -233,19 +326,19 @@ const Products = () => {
                     >
                       <td className="px-4 lg:px-6 py-4">
                         <div className="flex items-center gap-3">
-                          <div className="w-12 h-12 bg-gray-100 rounded-lg overflow-hidden shrink-0">
-                            {product.img ? (
-                              <img
-                                src={`/images/${product.img}`}
-                                alt={product.name}
-                                className="w-full h-full object-cover"
-                              />
-                            ) : (
-                              <div className="w-full h-full flex items-center justify-center text-gray-400 text-xs">
-                                No img
-                              </div>
-                            )}
-                          </div>
+<div className="w-12 h-12 bg-gray-100 rounded-lg overflow-hidden shrink-0">
+  {getProductImage(product) ? (
+    <img
+      src={getProductImage(product)}
+      alt={product.name}
+      className="w-full h-full object-cover"
+    />
+  ) : (
+    <div className="w-full h-full flex items-center justify-center text-gray-400 text-xs">
+      No img
+    </div>
+  )}
+</div>
                           <div className="min-w-0">
                             <p className="font-medium truncate">{product.name}</p>
                             <p className="text-xs text-gray-500 truncate">

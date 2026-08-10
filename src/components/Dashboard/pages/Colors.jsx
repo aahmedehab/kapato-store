@@ -14,52 +14,81 @@ const Colors = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [drawerMode, setDrawerMode] = useState("add");
 
-  const fetchColors = async () => {
-    try {
-      const res = await fetch(`${API_URL}/api/colors`);
-      const data = await res.json();
-      setColors(data);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoading(false);
+const fetchColors = async () => {
+  try {
+    const token = localStorage.getItem("adminToken");
+
+    const res = await fetch(`${API_URL}/api/colors`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (res.status === 401) {
+      localStorage.removeItem("adminToken");
+      window.location.href = "/admin/login";
+      return;
     }
-  };
 
-  const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this color?")) return;
+    const data = await res.json();
 
-    try {
-      const res = await fetch(`${API_URL}/api/colors/${id}`, {
-        method: "DELETE",
-      });
+    if (!res.ok) {
+      throw new Error(data.message || "Failed to fetch colors");
+    }
 
-      const data = await res.json();
+    setColors(data);
+  } catch (err) {
+    console.error(err);
+  } finally {
+    setLoading(false);
+  }
+};
 
-      if (!res.ok) {
-        if (data.products) {
-          const names = data.products
-            .map((p) => `• ${p.name}`)
-            .join("\n");
+const handleDelete = async (id) => {
+  if (!window.confirm("Are you sure you want to delete this color?")) return;
 
-          alert(
-            `${data.error}\n\nUsed by:\n${names}\n\nYou can edit the color instead.`
-          );
-        } else {
-          alert(data.error || "Failed to delete color.");
-        }
+  try {
+    const token = localStorage.getItem("adminToken");
 
-        return;
+    const res = await fetch(`${API_URL}/api/colors/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (res.status === 401) {
+      localStorage.removeItem("adminToken");
+      window.location.href = "/admin/login";
+      return;
+    }
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      if (data.products) {
+        const names = data.products
+          .map((p) => `• ${p.name}`)
+          .join("\n");
+
+        alert(
+          `${data.error}\n\nUsed by:\n${names}\n\nYou can edit the color instead.`
+        );
+      } else {
+        alert(data.error || "Failed to delete color.");
       }
 
-      setColors((prev) => prev.filter((c) => c.id !== id));
-
-      alert("Color deleted successfully.");
-    } catch (err) {
-      console.error(err);
-      alert("Error deleting color.");
+      return;
     }
-  };
+
+    setColors((prev) => prev.filter((c) => c.id !== id));
+
+    alert("Color deleted successfully.");
+  } catch (err) {
+    console.error(err);
+    alert("Error deleting color.");
+  }
+};
 
   const openAdd = () => {
     setSelectedColor(null);
@@ -67,18 +96,35 @@ const Colors = () => {
     setIsDrawerOpen(true);
   };
 
-  const openEdit = async (id) => {
-    try {
-      const res = await fetch(`${API_URL}/api/colors/${id}`);
-      const data = await res.json();
+const openEdit = async (id) => {
+  try {
+    const token = localStorage.getItem("adminToken");
 
-      setSelectedColor(data);
-      setDrawerMode("edit");
-      setIsDrawerOpen(true);
-    } catch (err) {
-      console.error(err);
+    const res = await fetch(`${API_URL}/api/colors/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (res.status === 401) {
+      localStorage.removeItem("adminToken");
+      window.location.href = "/admin/login";
+      return;
     }
-  };
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data.message || "Failed to fetch color");
+    }
+
+    setSelectedColor(data);
+    setDrawerMode("edit");
+    setIsDrawerOpen(true);
+  } catch (err) {
+    console.error(err);
+  }
+};
 
   useEffect(() => {
     fetchColors();

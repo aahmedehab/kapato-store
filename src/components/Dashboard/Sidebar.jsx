@@ -6,6 +6,7 @@ import {
   Settings,
   Palette,
   X,
+  LogOut,
 } from "lucide-react";
 
 import { NavLink } from "react-router-dom";
@@ -44,6 +45,11 @@ const links = [
 ];
 
 const Sidebar = ({ isOpen, onClose }) => {
+  const handleLogout = () => {
+    localStorage.removeItem("adminToken");
+    window.location.href = "/admin/login";
+  };
+
   return (
     <>
       {/* Mobile overlay */}
@@ -98,6 +104,17 @@ const Sidebar = ({ isOpen, onClose }) => {
             );
           })}
         </nav>
+
+        {/* Logout */}
+        <div className="p-4 border-t">
+          <button
+            onClick={handleLogout}
+            className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm sm:text-base text-red-600 hover:bg-red-50 transition"
+          >
+            <LogOut size={20} />
+            Logout
+          </button>
+        </div>
       </aside>
     </>
   );

@@ -13,42 +13,71 @@ const Customers = () => {
   const [selectedCustomer, setSelectedCustomer] = useState(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
 
-  const fetchCustomers = async () => {
-    try {
-      const res = await fetch(`${API_URL}/api/customers`);
-      const data = await res.json();
+const fetchCustomers = async () => {
+  try {
+    const token = localStorage.getItem("adminToken");
 
-      setCustomers(data);
-      setFilteredCustomers(data);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoading(false);
+    const res = await fetch(`${API_URL}/api/customers`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (res.status === 401) {
+      localStorage.removeItem("adminToken");
+      window.location.href = "/admin/login";
+      return;
     }
-  };
 
-  const openCustomer = async (email) => {
-    try {
-      const encodedEmail = encodeURIComponent(email);
+    const data = await res.json();
 
-      const res = await fetch(
-        `${API_URL}/api/customers/${encodedEmail}`
-      );
+    if (!res.ok) {
+      throw new Error(data.message || "Failed to fetch customers");
+    }
 
-      const data = await res.json();
+    setCustomers(data);
+    setFilteredCustomers(data);
+  } catch (err) {
+    console.error(err);
+  } finally {
+    setLoading(false);
+  }
+};
 
-      if (!res.ok) {
-        alert(data.error);
-        return;
+const openCustomer = async (email) => {
+  try {
+    const token = localStorage.getItem("adminToken");
+    const encodedEmail = encodeURIComponent(email);
+
+    const res = await fetch(
+      `${API_URL}/api/customers/${encodedEmail}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       }
+    );
 
-      setSelectedCustomer(data);
-      setDrawerOpen(true);
-    } catch (err) {
-      console.error(err);
-      alert("Failed to load customer.");
+    if (res.status === 401) {
+      localStorage.removeItem("adminToken");
+      window.location.href = "/admin/login";
+      return;
     }
-  };
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      alert(data.message || data.error || "Failed to load customer");
+      return;
+    }
+
+    setSelectedCustomer(data);
+    setDrawerOpen(true);
+  } catch (err) {
+    console.error(err);
+    alert("Failed to load customer.");
+  }
+};
 
   useEffect(() => {
     fetchCustomers();

@@ -24,6 +24,10 @@ import Settings from "./components/Dashboard/pages/Settings";
 
 import Policies from "./components/Pages/Policies";
 
+import AdminLogin from "./components/Pages/AdminLogin";
+
+import ProtectedRoute from "./components/ProtectedRoute";
+
 function App() {
   const location = useLocation();
 
@@ -48,14 +52,18 @@ function App() {
         <Route path="/confirmation" element={<Confirmation />} />
         <Route path="/policies" element={<Policies />} />
 
-        <Route path="/dashboard" element={<DashboardLayout />}>
-          <Route index element={<DashboardHome />} />
-          <Route path="orders" element={<Orders />} />
-          <Route path="products" element={<Products />} />
-            <Route path="colors" element={<Colors />} />
-          <Route path="customers" element={<Customers />} />
-          <Route path="settings" element={<Settings />} />
-        </Route>
+        <Route path="/admin/login" element={<AdminLogin />} />
+
+<Route element={<ProtectedRoute />}>
+  <Route path="/dashboard" element={<DashboardLayout />}>
+    <Route index element={<DashboardHome />} />
+    <Route path="orders" element={<Orders />} />
+    <Route path="products" element={<Products />} />
+    <Route path="colors" element={<Colors />} />
+    <Route path="customers" element={<Customers />} />
+    <Route path="settings" element={<Settings />} />
+  </Route>
+</Route>
 
           {/* Any unknown URL → Home */}
           <Route path="*" element={<Navigate to="/" replace />} />  

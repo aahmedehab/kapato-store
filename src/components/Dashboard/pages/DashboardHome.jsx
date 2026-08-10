@@ -20,16 +20,33 @@ const DashboardHome = () => {
     fetchDashboard();
   }, []);
 
-  const fetchDashboard = async () => {
-    try {
-      const res = await fetch(`${API_URL}/api/dashboard`);
-      const data = await res.json();
+const fetchDashboard = async () => {
+  try {
+    const token = localStorage.getItem("adminToken");
 
-      setDashboard(data);
-    } catch (err) {
-      console.error(err);
+    const res = await fetch(`${API_URL}/api/dashboard`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (res.status === 401) {
+      localStorage.removeItem("adminToken");
+      window.location.href = "/admin/login";
+      return;
     }
-  };
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data.message || "Failed to fetch dashboard");
+    }
+
+    setDashboard(data);
+  } catch (err) {
+    console.error(err);
+  }
+};
 
   if (!dashboard) {
     return (

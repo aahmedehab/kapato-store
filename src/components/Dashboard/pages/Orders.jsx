@@ -16,8 +16,26 @@ const Orders = () => {
 
   const fetchOrders = async () => {
     try {
-      const res = await fetch(`${API_URL}/api/orders`);
+      const token = localStorage.getItem("adminToken");
+
+      const res = await fetch(`${API_URL}/api/orders`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (res.status === 401) {
+        localStorage.removeItem("adminToken");
+        window.location.href = "/admin/login";
+        return;
+      }
+
       const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.message || "Failed to fetch orders");
+      }
+
       setOrders(data);
     } catch (err) {
       console.error(err);
@@ -26,29 +44,57 @@ const Orders = () => {
     }
   };
 
-  useEffect(() => {
-    fetchOrders();
-  }, []);
-
   const handleStatusChange = async (orderId, newStatus) => {
     try {
-      await fetch(`${API_URL}/api/orders/${orderId}/status`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ status: newStatus }),
-      });
+      const token = localStorage.getItem("adminToken");
+
+      const res = await fetch(
+        `${API_URL}/api/orders/${orderId}/status`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            status: newStatus,
+          }),
+        }
+      );
+
+      if (res.status === 401) {
+        localStorage.removeItem("adminToken");
+        window.location.href = "/admin/login";
+        return;
+      }
+
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.message || "Failed to update status");
+      }
 
       setOrders((prev) =>
-        prev.map((o) => (o.id === orderId ? { ...o, status: newStatus } : o))
+        prev.map((order) =>
+          order.id === orderId
+            ? { ...order, status: newStatus }
+            : order
+        )
       );
+
       setSelectedOrder((prev) =>
-        prev?.id === orderId ? { ...prev, status: newStatus } : prev
+        prev?.id === orderId
+          ? { ...prev, status: newStatus }
+          : prev
       );
     } catch (err) {
       console.error(err);
-      alert("Failed to update status");
+      alert(err.message || "Failed to update status");
     }
   };
+
+  useEffect(() => {
+    fetchOrders();
+  }, []);
 
   const filteredOrders = orders.filter((order) => {
     const matchesSearch =
