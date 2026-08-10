@@ -172,24 +172,24 @@ const FeaturedCollection = () => {
     <section className="w-full py-16 md:py-20 bg-secondary relative overflow-hidden">
       {/* Header */}
       <div className="max-w-7xl mx-auto px-6 mb-10 md:mb-14">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-          <div>
-            <h2 className="text-4xl md:text-5xl font-bold text-primary tracking-tight">
-              Our Collection
-            </h2>
-            <p className="text-gray-500 mt-3 text-lg max-w-md">
-              Five icons. Endless summer.
-            </p>
-          </div>
+<div className="flex flex-col items-start gap-5">
+  <div>
+    <h2 className="text-4xl md:text-5xl font-bold text-primary tracking-tight">
+      Our Collection
+    </h2>
+    <p className="text-gray-500 mt-3 text-lg max-w-md">
+      Five icons. Endless summer.
+    </p>
+  </div>
 
-          <Link
-            to="/shop"
-            className="inline-flex items-center gap-2 text-sm font-medium text-primary border border-primary/30 px-5 py-2.5 rounded-full hover:bg-primary hover:text-white transition-all duration-300"
-          >
-            Shop All
-            <span>→</span>
-          </Link>
-        </div>
+  <Link
+    to="/shop"
+    className="group inline-flex items-center gap-2 text-sm font-medium text-primary hover:text-primary/70 transition-colors"
+  >
+    Shop All
+    <span className="group-hover:translate-x-1 transition-transform">→</span>
+  </Link>
+</div>
       </div>
 
       {/* Carousel */}
