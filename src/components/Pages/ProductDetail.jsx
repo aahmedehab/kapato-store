@@ -103,7 +103,138 @@ setVariants(data.variants);
   fetchProduct();
 }, [id]);
 
-  if (loading) return <div className="text-center py-20 text-xl">Loading product...</div>;
+if (loading) {
+  return (
+    <div className="bg-secondary-30">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-10 lg:py-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 lg:gap-16">
+
+          {/* Left Column */}
+          <div className="space-y-4 sm:space-y-5 animate-pulse">
+
+            {/* Main Image */}
+            <div className="bg-gray-200 rounded-xl sm:rounded-2xl aspect-square" />
+
+            {/* Thumbnails */}
+            <div className="flex gap-2 overflow-hidden">
+              {[1, 2, 3, 4, 5].map((item) => (
+                <div
+                  key={item}
+                  className="w-14 h-14 sm:w-[72px] sm:h-[72px] bg-gray-200 rounded-xl flex-shrink-0"
+                />
+              ))}
+            </div>
+
+            {/* Delivery */}
+            <div className="border border-gray-200 rounded-xl p-4 sm:p-5 bg-secondary-50">
+              <div className="h-4 w-28 bg-gray-200 rounded mb-3" />
+              <div className="h-6 w-52 bg-gray-200 rounded" />
+            </div>
+          </div>
+
+          {/* Right Column */}
+          <div className="space-y-5 animate-pulse">
+
+            {/* Product Name */}
+            <div>
+              <div className="h-9 sm:h-10 lg:h-12 w-3/4 bg-gray-200 rounded-lg" />
+
+              {/* SKU */}
+              <div className="h-8 w-48 bg-gray-200 rounded-lg mt-3" />
+            </div>
+
+            {/* Colors */}
+            <div>
+              <div className="h-5 w-16 bg-gray-200 rounded mb-3" />
+
+              <div className="flex gap-2.5 flex-wrap">
+                {[1, 2, 3, 4, 5, 6, 7, 8].map((item) => (
+                  <div
+                    key={item}
+                    className="w-10 h-10 bg-gray-200 rounded-lg"
+                  />
+                ))}
+              </div>
+            </div>
+
+            {/* Price Box */}
+            <div className="bg-gray-200 rounded-xl px-4 sm:px-5 py-4 space-y-4">
+              <div className="flex justify-between">
+                <div className="h-4 w-12 bg-gray-300 rounded" />
+                <div className="h-4 w-32 bg-gray-300 rounded" />
+              </div>
+
+              <div className="flex justify-between">
+                <div className="h-5 w-24 bg-gray-300 rounded" />
+                <div className="h-6 w-24 bg-gray-300 rounded" />
+              </div>
+            </div>
+
+            {/* Quantity */}
+            <div>
+              <div className="h-5 w-20 bg-gray-200 rounded mb-3" />
+
+              <div className="w-36 h-11 bg-gray-200 rounded-xl" />
+            </div>
+
+            {/* Summary */}
+            <div className="border border-gray-200 rounded-xl p-4 sm:p-5 bg-secondary-50 space-y-4">
+              <div className="flex justify-between">
+                <div className="h-4 w-28 bg-gray-200 rounded" />
+                <div className="h-4 w-24 bg-gray-200 rounded" />
+              </div>
+
+              <div className="flex justify-between">
+                <div className="h-4 w-32 bg-gray-200 rounded" />
+                <div className="h-4 w-24 bg-gray-200 rounded" />
+              </div>
+
+              <div className="border-t border-gray-200 pt-4 flex justify-between">
+                <div className="h-5 w-36 bg-gray-200 rounded" />
+                <div className="h-6 w-28 bg-gray-200 rounded" />
+              </div>
+            </div>
+
+            {/* Buttons */}
+            <div className="flex flex-col sm:flex-row gap-3">
+              <div className="flex-1 h-12 bg-gray-200 rounded-xl" />
+              <div className="flex-1 h-12 bg-gray-200 rounded-xl" />
+            </div>
+          </div>
+        </div>
+
+        {/* Tabs Skeleton */}
+        <div className="mt-10 sm:mt-14 animate-pulse">
+          <div className="flex gap-6 border-b border-gray-200 pb-3">
+            <div className="h-5 w-24 bg-gray-200 rounded" />
+            <div className="h-5 w-32 bg-gray-200 rounded" />
+            <div className="h-5 w-20 bg-gray-200 rounded" />
+          </div>
+
+          <div className="mt-6 border border-gray-200 rounded-xl bg-secondary-50 p-6 space-y-3">
+            <div className="h-4 w-full bg-gray-200 rounded" />
+            <div className="h-4 w-5/6 bg-gray-200 rounded" />
+            <div className="h-4 w-4/6 bg-gray-200 rounded" />
+          </div>
+        </div>
+
+        {/* Physical Dimensions Skeleton */}
+        <div className="mt-10 sm:mt-14 pb-4 sm:pb-8 animate-pulse">
+          <div className="h-7 w-48 bg-gray-200 rounded mb-6" />
+
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
+            {[1, 2, 3, 4].map((item) => (
+              <div
+                key={item}
+                className="bg-gray-200 rounded-xl sm:rounded-2xl p-6 h-28"
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
   if (!product) return <div>Product not found</div>;
 
   const selectedVariant = variants[selectedColorIndex];

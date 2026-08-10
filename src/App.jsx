@@ -1,16 +1,14 @@
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route, useLocation, Navigate } from "react-router-dom";
 
-import Header from "./components/Header";
 import Nav from "./components/Nav";
 import Footer from "./components/Footer";
 
 import Home from "./components/Pages/Home";
-import About from "./components/Pages/About";
 import Shop from "./components/Pages/Shop";
+import Contact from "./components/Pages/Contact";
 import ProductDetail from './components/Pages/ProductDetail';
 import Cart from './components/Pages/Cart';
 import Checkout from './components/Pages/Checkout';
-import Terms from "./components/Pages/Terms";
 import Confirmation from "./components/Pages/Confirmation";
 
 import ScrollToTop from "./components/ScrollToTop";
@@ -23,6 +21,8 @@ import Products from "./components/Dashboard/pages/Products";
 import Colors from "./components/Dashboard/pages/Colors";
 import Customers from "./components/Dashboard/pages/Customers";
 import Settings from "./components/Dashboard/pages/Settings";
+
+import Policies from "./components/Pages/Policies";
 
 function App() {
   const location = useLocation();
@@ -40,13 +40,13 @@ function App() {
 
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
         <Route path="/shop" element={<Shop />} />
+        <Route path="/contact" element={<Contact />} />
         <Route path="/product/:id" element={<ProductDetail />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/confirmation" element={<Confirmation />} />
-        <Route path="/terms" element={<Terms />} />
+        <Route path="/policies" element={<Policies />} />
 
         <Route path="/dashboard" element={<DashboardLayout />}>
           <Route index element={<DashboardHome />} />
@@ -56,9 +56,12 @@ function App() {
           <Route path="customers" element={<Customers />} />
           <Route path="settings" element={<Settings />} />
         </Route>
+
+          {/* Any unknown URL → Home */}
+          <Route path="*" element={<Navigate to="/" replace />} />  
       </Routes>
 
-      {!isDashboard && <Footer />}
+      {!isDashboard && !isCheckout && !isConfirmation && <Footer />}
     </div>
   );
 }

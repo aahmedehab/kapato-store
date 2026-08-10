@@ -56,9 +56,10 @@ import { useState, useEffect } from 'react';
 
           {/* Desktop Links */}
           <div className="hidden md:flex items-center gap-8 text-sm font-medium text-primary">
+            <Link to="/" className="hover:underline transition">HOME</Link>
             <Link to="/shop" className="hover:underline transition">SHOP</Link>
-            <Link to="/about" className="hover:underline transition">ABOUT</Link>
             <Link to="/contact" className="hover:underline transition">CONTACT</Link>
+            <Link to="/policies" className="hover:underline transition">POLICIES</Link>
           </div>
 
           {/* Right Side: Cart + Burger */}
@@ -102,9 +103,10 @@ import { useState, useEffect } from 'react';
         </div>
 
         <div className="flex flex-col p-6 gap-8 text-xl font-medium text-primary">
+          <Link to="/" onClick={() => setMenuOpen(false)} className="hover:text-primary-dark transition">HOME</Link>
           <Link to="/shop" onClick={() => setMenuOpen(false)} className="hover:text-primary-dark transition">SHOP</Link>
-          <Link to="/about" onClick={() => setMenuOpen(false)} className="hover:text-primary-dark transition">ABOUT</Link>
           <Link to="/contact" onClick={() => setMenuOpen(false)} className="hover:text-primary-dark transition">CONTACT</Link>
+          <Link to="/policies" onClick={() => setMenuOpen(false)} className="hover:text-primary-dark transition">POLICIES</Link>
         </div>
       </div>
 

@@ -1,9 +1,7 @@
 import { useCart } from '../../context/CartContext';
 import { useState } from 'react';
-import emailjs from '@emailjs/browser';
 import { ShoppingCart } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
-import { EMAILJS_CONFIG } from "../../config/emailjs";
 
 const Checkout = () => {
 const { cart, clearCart } = useCart();
@@ -32,11 +30,6 @@ const { cart, clearCart } = useCart();
   const handleCompleteOrder = async (e) => {
     e.preventDefault();
     setLoading(true);
-
-    const orderDetails = cart.map(item =>
-      `${item.name} (${item.color} - ${item.sku}) x${item.quantity} = LE ${item.price * item.quantity}`
-    ).join("\n");
-
     
     try {
     const orderResponse = await fetch(`${import.meta.env.VITE_API_URL}/api/orders`, {
@@ -50,8 +43,10 @@ const { cart, clearCart } = useCart();
       email: formData.email,
       phone: formData.phone,
       address: formData.address,
+      apartment: formData.apartment,
       city: formData.city,
       governorate: formData.governorate,
+      postalCode: formData.postalCode,
     },
 
     cart,
@@ -72,46 +67,6 @@ const orderData = await orderResponse.json();
 if (!orderData.success) {
   throw new Error(orderData.message);
 }
-
-const templateParams = {
-  to_email: "kapato.eg@gmail.com",
-
-  order_id: orderData.orderId,
-
-  customer_name: `${formData.firstName} ${formData.lastName}`,
-
-  email: formData.email,
-
-  phone: formData.phone,
-
-  address: `${formData.address}, ${
-    formData.apartment ? formData.apartment + ", " : ""
-  }${formData.city}, ${formData.governorate}`,
-
-  items: orderDetails,
-
-  subtotal,
-
-  shipping,
-
-  total,
-};
-
-await Promise.all([
-  emailjs.send(
-    EMAILJS_CONFIG.SERVICE_ID,
-    EMAILJS_CONFIG.CUSTOMER_TEMPLATE_ID,
-    templateParams,
-    EMAILJS_CONFIG.PUBLIC_KEY
-  ),
-
-  emailjs.send(
-    EMAILJS_CONFIG.SERVICE_ID,
-    EMAILJS_CONFIG.ADMIN_TEMPLATE_ID,
-    templateParams,
-    EMAILJS_CONFIG.PUBLIC_KEY
-  ),
-]);
 
 if (typeof clearCart === "function") {
   clearCart();
@@ -175,6 +130,7 @@ navigate("/confirmation", {
                 <div className="grid grid-cols-3 gap-3">
                   <input type="text" name="city" required placeholder="City" className="border border-gray-300 rounded-xl px-4 py-3 text-sm" value={formData.city} onChange={handleChange} />
                   <select name="governorate" required className="border border-gray-300 rounded-xl px-4 py-3 text-sm" value={formData.governorate} onChange={handleChange}>
+                    <option value="" disabled> Select Governorate </option>
                     <option value="Cairo">Cairo</option>
                     <option value="Giza">Giza</option>
                     {/* <option value="Alexandria">Alexandria</option>

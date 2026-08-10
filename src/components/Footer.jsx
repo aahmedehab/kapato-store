@@ -38,7 +38,7 @@ import { FaFacebookF } from "react-icons/fa";
 const Footer = () => {
   return (
     <footer className="bg-primary text-secondary pt-16 pb-10">
-      <div className="max-w-7xl mx-auto px-6">
+      <div className="max-w-7xl mx-auto px-6 relative">
         <div className="grid grid-cols-2 md:grid-cols-12 gap-10">
           
           {/* Logo + Copyright */}
@@ -60,7 +60,7 @@ const Footer = () => {
               <li><Link to="/" className="hover:text-secondary transition">Home</Link></li>
               <li><Link to="/shop" className="hover:text-secondary transition">All Caps</Link></li>
               <li><Link to="/contact" className="hover:text-secondary transition">Contact</Link></li>
-              <li><Link to="/returns" className="hover:text-secondary transition">Shipping & Returns</Link></li>
+              <li><Link to="/policies" className="hover:text-secondary transition">Policies</Link></li>
             </ul>
           </div>
 
@@ -83,8 +83,8 @@ const Footer = () => {
             </div> */}
 
             {/* Social Icons */}
-<div className="flex gap-5 mt-10">
-  <a
+<div className="flex gap-5 mt-10 md:absolute md:right-6 md:bottom-10">
+    <a
     href="https://www.instagram.com/kapato.eg/"
     target="_blank"
     rel="noopener noreferrer"
