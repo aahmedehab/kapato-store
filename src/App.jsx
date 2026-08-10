@@ -35,12 +35,13 @@ function App() {
   const isCheckout = location.pathname === "/checkout";
   const isConfirmation = location.pathname === "/confirmation";
   const isDashboard = location.pathname.startsWith("/dashboard");
+  const isAdmin = location.pathname.startsWith("/admin");
 
   return (
     <div className="min-h-screen bg-[#ffffff]">
       <ScrollToTop />
 
-      {!isCheckout && !isConfirmation && !isDashboard && <Nav overlay={isHome} />}
+      {!isCheckout && !isConfirmation && !isDashboard && !isAdmin && <Nav overlay={isHome} />}
 
       <Routes>
         <Route path="/" element={<Home />} />
@@ -69,7 +70,7 @@ function App() {
           <Route path="*" element={<Navigate to="/" replace />} />  
       </Routes>
 
-      {!isDashboard && !isCheckout && !isConfirmation && <Footer />}
+      {!isDashboard && !isCheckout && !isConfirmation && !isAdmin && <Footer />}
     </div>
   );
 }

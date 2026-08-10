@@ -58,7 +58,7 @@ const Footer = () => {
             <h3 className="font-medium mb-4 text-secondary-90">Quick links</h3>
             <ul className="space-y-3 text-sm text-secondary-70">
               <li><Link to="/" className="hover:text-secondary transition">Home</Link></li>
-              <li><Link to="/shop" className="hover:text-secondary transition">All Caps</Link></li>
+              <li><Link to="/shop" className="hover:text-secondary transition">Shop</Link></li>
               <li><Link to="/contact" className="hover:text-secondary transition">Contact</Link></li>
               <li><Link to="/policies" className="hover:text-secondary transition">Policies</Link></li>
             </ul>
