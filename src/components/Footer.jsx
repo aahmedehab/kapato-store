@@ -103,7 +103,7 @@ const Footer = () => {
   </a>
 
   <a
-    href="https://www.tiktok.com/@kapato.eg?_r=1&_t=ZS-98kQGV6gStM"
+    href="https://www.tiktok.com/@kapato.eg?_r=1&_t=ZS-98n6XM9PwSQ"
     target="_blank"
     rel="noopener noreferrer"
     className="text-2xl hover:text-secondary-70 transition"
