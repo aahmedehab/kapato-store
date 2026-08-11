@@ -243,14 +243,34 @@ const FeaturedCollection = () => {
                 />
               </div>
 
-              <div className="mt-5 text-center">
-                <h3 className="font-semibold text-primary text-lg tracking-tight group-hover:underline underline-offset-4 decoration-1">
-                  {product.name}
-                </h3>
-                <p className="text-gray-500 mt-1.5 text-sm">
-                  {product.price} EGP
-                </p>
-              </div>
+<div className="mt-5 text-center">
+  <h3 className="font-semibold text-primary text-lg tracking-tight group-hover:underline underline-offset-4 decoration-1">
+    {product.name}
+  </h3>
+
+  <div className="mt-1.5 flex flex-col items-center">
+    <div className="flex items-center justify-center gap-2">
+      <p className="font-semibold text-primary text-sm">
+        {Number(product.price).toFixed(0)} EGP
+      </p>
+
+      {product.old_price &&
+        Number(product.old_price) > Number(product.price) && (
+          <p className="text-sm text-gray-400 line-through">
+            {Number(product.old_price).toFixed(0)} EGP
+          </p>
+        )}
+    </div>
+
+    {product.old_price &&
+      Number(product.old_price) > Number(product.price) && (
+        <p className="text-xs font-medium text-green-600 mt-1">
+          Save{" "}
+          {(Number(product.old_price) - Number(product.price)).toFixed(0)} EGP
+        </p>
+      )}
+  </div>
+</div>
             </Link>
           ))}
         </div>

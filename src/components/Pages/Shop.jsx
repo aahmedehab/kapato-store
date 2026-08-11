@@ -196,21 +196,41 @@ if (loading || !imagesLoaded) {
                     <p className="text-gray-500 text-sm mt-1">One Size • Adjustable</p>
                   )}
 
-                  <div className="mt-4 flex justify-between items-end">
-                    <div>
-                      <p className="font-bold text-xl">EGP {item.price}</p>
-                    </div>
+<div className="mt-4 flex justify-between items-end">
+  <div>
+    <div className="flex items-center gap-2">
+      <p className="font-bold text-xl">
+        EGP {Number(item.price).toFixed(0)}
+      </p>
 
-                    {filter === 'collections' ? (
-                      <p className="text-xs text-gray-500">
-                        {item.colors_count} {item.colors_count == 1 ? "color" : "colors"}
-                      </p>
-                    ) : (
-                      <p className="text-xs text-gray-500">
-                        {item.stock > 0 ? `${item.stock} in stock` : 'Out of stock'}
-                      </p>
-                    )}
-                  </div>
+      {item.old_price &&
+        Number(item.old_price) > Number(item.price) && (
+          <p className="text-sm text-gray-400 line-through">
+            EGP {Number(item.old_price).toFixed(0)}
+          </p>
+        )}
+    </div>
+
+    {item.old_price &&
+      Number(item.old_price) > Number(item.price) && (
+        <p className="text-xs font-medium text-green-600 mt-1">
+          Save EGP{" "}
+          {(Number(item.old_price) - Number(item.price)).toFixed(0)}
+        </p>
+      )}
+  </div>
+
+  {filter === "collections" ? (
+    <p className="text-xs text-gray-500">
+      {item.colors_count}{" "}
+      {item.colors_count == 1 ? "color" : "colors"}
+    </p>
+  ) : (
+    <p className="text-xs text-gray-500">
+      {item.stock > 0 ? `${item.stock} in stock` : "Out of stock"}
+    </p>
+  )}
+</div>
                 </div>
               </div>
             </Link>

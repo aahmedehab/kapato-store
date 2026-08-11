@@ -16,6 +16,7 @@ const ProductDrawer = ({
   name: "",
   slug: "",
   price: "",
+  old_price: "",
   description: "",
   folder_path: "",
   is_active: true,
@@ -43,6 +44,7 @@ useEffect(() => {
       name: "",
       slug: "",
       price: "",
+      old_price: "",
       description: "",
       folder_path: "",
       is_active: true,
@@ -57,6 +59,7 @@ useEffect(() => {
       name: product.name || "",
       slug: product.slug || "",
       price: product.price || "",
+      old_price: product.old_price || "",
       description: product.description || "",
       folder_path: product.folder_path || "",
       is_active: product.is_active ?? true,
@@ -312,20 +315,44 @@ const getImages = (variant) => {
               )}
             </div>
 
-            <div>
-              <label className="text-sm text-gray-500">Price</label>
-              {isEdit ? (
-                <input
-                  type="number"
-                  name="price"
-                  value={formData.price}
-                  onChange={handleChange}
-                  className="w-full border rounded-xl px-4 py-2.5 mt-1 text-sm"
-                />
-              ) : (
-                <p className="font-medium mt-1">LE {product.price}</p>
-              )}
-            </div>
+<div>
+  <label className="text-sm text-gray-500">Price</label>
+
+  {isEdit ? (
+    <input
+      type="number"
+      name="price"
+      value={formData.price}
+      onChange={handleChange}
+      className="w-full border rounded-xl px-4 py-2.5 mt-1 text-sm"
+    />
+  ) : (
+    <p className="font-medium mt-1">
+      LE {Number(product.price).toFixed(2)}
+    </p>
+  )}
+</div>
+
+<div>
+  <label className="text-sm text-gray-500">Old Price</label>
+
+  {isEdit ? (
+    <input
+      type="number"
+      name="old_price"
+      value={formData.old_price}
+      onChange={handleChange}
+      placeholder="e.g. 600"
+      className="w-full border rounded-xl px-4 py-2.5 mt-1 text-sm"
+    />
+  ) : (
+    <p className="text-sm mt-1 text-gray-500">
+      {product.old_price
+        ? `LE ${Number(product.old_price).toFixed(2)}`
+        : "-"}
+    </p>
+  )}
+</div>
 
 <div>
   <label className="text-sm text-gray-500">

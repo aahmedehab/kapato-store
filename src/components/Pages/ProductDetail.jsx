@@ -89,6 +89,7 @@ useEffect(() => {
 setProduct({
   ...data,
   price: Number(data.price),
+  old_price: data.old_price ? Number(data.old_price) : null,
 });
 
 setVariants(data.variants);
@@ -439,13 +440,38 @@ onClick={() => changeVariant(i)}
                 {selectedVariant.sku}
               </span>
             </div>
-            <div className="flex justify-between items-center gap-3">
-              <span className="text-gray-700 font-medium text-sm sm:text-base">Item Price:</span>
-              <span className="font-bold text-gray-900 text-base sm:text-lg">
-                {formatPrice(product.price)}
-              </span>
-            </div>
-          </div>
+
+<div className="flex justify-between items-center gap-3">
+  <span className="text-gray-700 font-medium text-sm sm:text-base">
+    Item Price:
+  </span>
+
+  <div className="flex flex-col items-end">
+    <div className="flex items-center gap-2">
+      {product.old_price &&
+        Number(product.old_price) > Number(product.price) && (
+          <span className="text-sm text-gray-400 line-through">
+            {formatPrice(Number(product.old_price))}
+          </span>
+        )}
+
+      <span className="font-bold text-gray-900 text-base sm:text-lg">
+        {formatPrice(product.price)}
+      </span>
+    </div>
+
+    {product.old_price &&
+      Number(product.old_price) > Number(product.price) && (
+        <span className="text-xs font-medium text-green-600 mt-0.5">
+          Save{" "}
+          {formatPrice(
+            Number(product.old_price) - Number(product.price)
+          )}
+        </span>
+      )}
+  </div>
+</div>
+         </div>
 
           <div>
             <div className="flex flex-wrap justify-between items-center gap-2 mb-3">
