@@ -64,6 +64,8 @@ const [product, setProduct] = useState(null);
 const [variants, setVariants] = useState([]);
 const [loading, setLoading] = useState(true);
 
+const [relatedProducts, setRelatedProducts] = useState([]);
+
 const [isAdding, setIsAdding] = useState(false);
 const [added, setAdded] = useState(false);
 
@@ -103,6 +105,51 @@ setVariants(data.variants);
 
   fetchProduct();
 }, [id]);
+
+useEffect(() => {
+  const fetchRelatedProducts = async () => {
+    try {
+      const res = await fetch(`${API_URL}/api/products`);
+
+      if (!res.ok) {
+        throw new Error("Failed to fetch products");
+      }
+
+      const data = await res.json();
+
+      const filtered = data
+        .filter(
+          (item) =>
+            String(item.id) !== String(id) &&
+            item.is_active !== false
+        )
+        .slice(0, 4);
+
+      setRelatedProducts(filtered);
+    } catch (err) {
+      console.error("Failed to fetch related products:", err);
+    }
+  };
+
+  fetchRelatedProducts();
+}, [id]);
+
+const getRelatedProductImage = (item) => {
+  const variant = item.variants?.[0];
+
+  if (!variant || !item.folder_path) {
+    return null;
+  }
+
+  const key = `${item.folder_path}/${variant.folder_name}`;
+  const files = imagesMap[key];
+
+  if (!files || files.length === 0) {
+    return null;
+  }
+
+  return `/images/${key}/${files[0]}`;
+};
 
 if (loading) {
   return (
@@ -657,6 +704,63 @@ onClick={() => changeVariant(i)}
           </div>
         </div>
       </div>
+
+      {/* You May Also Like */}
+{relatedProducts.length > 0 && (
+  <div className="mt-12 sm:mt-16 pb-8">
+    <div className="flex items-center justify-between mb-5 sm:mb-6">
+      <h2 className="text-xl sm:text-2xl font-bold text-gray-900">
+        You May Also Like
+      </h2>
+    </div>
+
+    <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+      {relatedProducts.map((item) => {
+        const image = getRelatedProductImage(item);
+
+        return (
+          <button
+            key={item.id}
+            type="button"
+            onClick={() => navigate(`/product/${item.id}`)}
+            className="text-left group"
+          >
+            <div className="bg-secondary rounded-xl sm:rounded-2xl overflow-hidden aspect-square mb-3">
+              {image ? (
+                <img
+                  src={image}
+                  alt={item.name}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center text-gray-400">
+                  No Image
+                </div>
+              )}
+            </div>
+
+            <h3 className="font-semibold text-gray-900 text-sm sm:text-base truncate">
+              {item.name}
+            </h3>
+
+            <div className="flex items-center gap-2 mt-1">
+              {item.old_price &&
+                Number(item.old_price) > Number(item.price) && (
+                  <span className="text-xs sm:text-sm text-gray-400 line-through">
+                    {formatPrice(Number(item.old_price))}
+                  </span>
+                )}
+
+              <span className="font-bold text-gray-900 text-sm sm:text-base">
+                {formatPrice(Number(item.price))}
+              </span>
+            </div>
+          </button>
+        );
+      })}
+    </div>
+  </div>
+)}
     </div>
     </div>
   );

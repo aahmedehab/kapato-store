@@ -3,6 +3,15 @@ import { X, Plus, Trash2 } from "lucide-react";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
+const getAdminHeaders = () => {
+  const token = localStorage.getItem("adminToken");
+
+  return {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${token}`,
+  };
+};
+
 const ProductDrawer = ({
   product,
   isOpen,
@@ -77,14 +86,30 @@ useEffect(() => {
 }, []);
 
   // Fetch colors when drawer opens in edit mode
-  useEffect(() => {
-    if (isOpen && mode === "edit") {
-      fetch(`${API_URL}/api/colors`)
-        .then((res) => res.json())
-        .then((data) => setColors(data))
-        .catch(console.error);
+useEffect(() => {
+  if (!isOpen || mode !== "edit") return;
+
+  const fetchColors = async () => {
+    try {
+      const res = await fetch(`${API_URL}/api/colors`, {
+        headers: getAdminHeaders(),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.message || "Failed to fetch colors");
+      }
+
+      setColors(Array.isArray(data) ? data : []);
+    } catch (err) {
+      console.error("Colors fetch error:", err);
+      setColors([]);
     }
-  }, [isOpen, mode]);
+  };
+
+  fetchColors();
+}, [isOpen, mode]);
 
 if (!isOpen) return null;
 
@@ -98,20 +123,19 @@ if (!isOpen) return null;
     }));
   };
 
-  const handleAddProduct = async () => {
+const handleAddProduct = async () => {
   setLoading(true);
 
   try {
     const res = await fetch(`${API_URL}/api/products`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: getAdminHeaders(),
       body: JSON.stringify(formData),
     });
 
     if (!res.ok) {
-      alert("Failed to add product");
+      const data = await res.json().catch(() => ({}));
+      alert(data.message || "Failed to add product");
       return;
     }
 
@@ -125,108 +149,128 @@ if (!isOpen) return null;
   }
 };
 
-  const handleSaveProduct = async () => {
-    setLoading(true);
-    try {
-      const res = await fetch(`${API_URL}/api/products/${product.id}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
+const handleSaveProduct = async () => {
+  setLoading(true);
 
-      if (res.ok) {
-        onUpdated?.();
-        onClose();
-      } else {
-        alert("Failed to update product");
-      }
-    } catch (err) {
-      console.error(err);
-      alert("Error updating product");
-    } finally {
-      setLoading(false);
+  try {
+    const res = await fetch(`${API_URL}/api/products/${product.id}`, {
+      method: "PUT",
+      headers: getAdminHeaders(),
+      body: JSON.stringify(formData),
+    });
+
+    if (res.ok) {
+      onUpdated?.();
+      onClose();
+    } else {
+      const data = await res.json().catch(() => ({}));
+      alert(data.message || "Failed to update product");
     }
-  };
+  } catch (err) {
+    console.error(err);
+    alert("Error updating product");
+  } finally {
+    setLoading(false);
+  }
+};
 
-  const handleAddVariant = async () => {
-if (
-  !newVariant.color_id ||
-  !newVariant.sku ||
-  !newVariant.folder_name
-) {
-  alert("Color, SKU and Folder Name are required");
-  return;
-}
+const handleAddVariant = async () => {
+  if (
+    !newVariant.color_id ||
+    !newVariant.sku ||
+    !newVariant.folder_name
+  ) {
+    alert("Color, SKU and Folder Name are required");
+    return;
+  }
 
-    try {
-      const res = await fetch(`${API_URL}/api/products/variants`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          product_id: product.id,
-          ...newVariant,
-          stock: Number(newVariant.stock) || 0,
-        }),
+  try {
+    const res = await fetch(`${API_URL}/api/products/variants`, {
+      method: "POST",
+      headers: getAdminHeaders(),
+      body: JSON.stringify({
+        product_id: product.id,
+        ...newVariant,
+        stock: Number(newVariant.stock) || 0,
+      }),
+    });
+
+    if (res.ok) {
+      const created = await res.json();
+
+      const color = colors.find(
+        (c) => c.id === Number(newVariant.color_id)
+      );
+
+      setVariants((prev) => [
+        ...prev,
+        {
+          ...created,
+          color,
+        },
+      ]);
+
+      setNewVariant({
+        color_id: "",
+        sku: "",
+        folder_name: "",
+        stock: 0,
       });
-
-      if (res.ok) {
-        const created = await res.json();
-        // نضيف اللون مع الـ variant عشان يظهر الاسم
-        const color = colors.find((c) => c.id === Number(newVariant.color_id));
-        setVariants((prev) => [...prev, { ...created, color }]);
-        setNewVariant({
-  color_id: "",
-  sku: "",
-  folder_name: "",
-  stock: 0,
-});
-      } else {
-        alert("Failed to add variant");
-      }
-    } catch (err) {
-      console.error(err);
-      alert("Error adding variant");
+    } else {
+      const data = await res.json().catch(() => ({}));
+      alert(data.message || "Failed to add variant");
     }
-  };
+  } catch (err) {
+    console.error(err);
+    alert("Error adding variant");
+  }
+};
 
-  const handleDeleteVariant = async (variantId) => {
-    if (!window.confirm("Delete this variant?")) return;
+const handleDeleteVariant = async (variantId) => {
+  if (!window.confirm("Delete this variant?")) return;
 
-    try {
-      const res = await fetch(`${API_URL}/api/products/variants/${variantId}`, {
+  try {
+    const res = await fetch(
+      `${API_URL}/api/products/variants/${variantId}`,
+      {
         method: "DELETE",
-      });
-
-      if (res.ok) {
-        setVariants((prev) => prev.filter((v) => v.id !== variantId));
-      } else {
-        alert("Failed to delete variant");
+        headers: getAdminHeaders(),
       }
-    } catch (err) {
-      console.error(err);
-    }
-  };
+    );
 
-  const handleSaveVariant = async (variant) => {
+    if (res.ok) {
+      setVariants((prev) =>
+        prev.filter((v) => v.id !== variantId)
+      );
+    } else {
+      const data = await res.json().catch(() => ({}));
+      alert(data.message || "Failed to delete variant");
+    }
+  } catch (err) {
+    console.error(err);
+    alert("Error deleting variant");
+  }
+};
+
+const handleSaveVariant = async (variant) => {
   try {
     const res = await fetch(
       `${API_URL}/api/products/variants/${variant.id}`,
       {
         method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: getAdminHeaders(),
         body: JSON.stringify({
           sku: variant.sku,
           folder_name: variant.folder_name,
-          stock: variant.stock,
+          stock: Number(variant.stock) || 0,
           color_id: variant.color_id,
         }),
       }
     );
 
     if (!res.ok) {
-      alert("Failed to update variant");
+      const data = await res.json().catch(() => ({}));
+      alert(data.message || "Failed to update variant");
       return;
     }
 
@@ -359,13 +403,19 @@ const getImages = (variant) => {
     Folder Path
   </label>
 
-  <input
-    name="folder_path"
-    value={formData.folder_path}
-    onChange={handleChange}
-    placeholder="caps/sunny"
-    className="w-full border rounded-xl px-4 py-2.5 mt-1 text-sm"
-  />
+  {isEdit ? (
+    <input
+      name="folder_path"
+      value={formData.folder_path}
+      onChange={handleChange}
+      placeholder="caps/sunny"
+      className="w-full border rounded-xl px-4 py-2.5 mt-1 text-sm"
+    />
+  ) : (
+    <p className="text-sm mt-1 text-gray-700">
+      {product?.folder_path || "-"}
+    </p>
+  )}
 </div>
 
             <div>
@@ -626,23 +676,30 @@ const getImages = (variant) => {
           </div>
 
           {/* Save Button */}
-          {isEdit && (
-            <div className="flex gap-3">
-              <button
-                onClick={onClose}
-                className="flex-1 border py-2.5 rounded-xl text-sm font-medium hover:bg-gray-50"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleSaveProduct}
-                disabled={loading}
-                className="flex-1 bg-black text-white py-2.5 rounded-xl text-sm font-medium hover:bg-gray-800 disabled:bg-gray-400"
-              >
-                {loading ? "Saving..." : "Save Changes"}
-              </button>
-            </div>
-          )}
+{isEdit && (
+  <div className="flex gap-3">
+    <button
+      onClick={onClose}
+      className="flex-1 border py-2.5 rounded-xl text-sm font-medium hover:bg-gray-50"
+    >
+      Cancel
+    </button>
+
+    <button
+      onClick={isAdd ? handleAddProduct : handleSaveProduct}
+      disabled={loading}
+      className="flex-1 bg-black text-white py-2.5 rounded-xl text-sm font-medium hover:bg-gray-800 disabled:bg-gray-400"
+    >
+      {loading
+        ? isAdd
+          ? "Adding..."
+          : "Saving..."
+        : isAdd
+        ? "Add Product"
+        : "Save Changes"}
+    </button>
+  </div>
+)}
         </div>
       </div>
     </>

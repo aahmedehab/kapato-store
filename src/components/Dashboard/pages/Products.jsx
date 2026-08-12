@@ -400,13 +400,17 @@ const openEdit = async (id) => {
         </>
       )}
 
-      <ProductDrawer
-        product={selectedProduct}
-        isOpen={isDrawerOpen}
-        onClose={() => setIsDrawerOpen(false)}
-        mode={drawerMode}
-        onUpdated={fetchProducts}
-      />
+<ProductDrawer
+  product={selectedProduct}
+  isOpen={isDrawerOpen || isAddOpen}
+  onClose={() => {
+    setIsDrawerOpen(false);
+    setIsAddOpen(false);
+  }}
+  mode={isAddOpen ? "edit" : drawerMode}
+  isAdd={isAddOpen}
+  onUpdated={fetchProducts}
+/>
     </div>
   );
 };

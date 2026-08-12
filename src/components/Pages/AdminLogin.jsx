@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -104,6 +104,14 @@ const AdminLogin = () => {
             {loading ? "Signing in..." : "Sign in"}
           </button>
         </form>
+<div className="text-center pt-1">
+  <Link
+    to="/"
+    className="text-xs text-gray-400 hover:text-primary transition"
+  >
+    ← Go to website
+  </Link>
+</div>
       </div>
     </div>
   );
