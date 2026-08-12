@@ -3,6 +3,7 @@ import { useCart } from '../../context/CartContext';
 import { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight, Copy, Crown, Minus, Plus } from 'lucide-react';
 import { PRODUCT_DESCRIPTIONS } from "../../data/constants";
+import { Link } from "react-router-dom";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -79,6 +80,12 @@ useEffect(() => {
 
 useEffect(() => {
   const fetchProduct = async () => {
+    setLoading(true);
+    setProduct(null);
+    setVariants([]);
+    setSelectedColorIndex(0);
+    setSelectedImageIndex(0);
+
     try {
       const res = await fetch(`${API_URL}/api/products/${id}`);
 
@@ -88,14 +95,13 @@ useEffect(() => {
 
       const data = await res.json();
 
-setProduct({
-  ...data,
-  price: Number(data.price),
-  old_price: data.old_price ? Number(data.old_price) : null,
-});
+      setProduct({
+        ...data,
+        price: Number(data.price),
+        old_price: data.old_price ? Number(data.old_price) : null,
+      });
 
-setVariants(data.variants);
-
+      setVariants(data.variants || []);
     } catch (err) {
       console.error(err);
     } finally {
@@ -719,12 +725,11 @@ onClick={() => changeVariant(i)}
         const image = getRelatedProductImage(item);
 
         return (
-          <button
-            key={item.id}
-            type="button"
-            onClick={() => navigate(`/product/${item.id}`)}
-            className="text-left group"
-          >
+<Link
+  key={item.id}
+  to={`/product/${item.id}`}
+  className="text-left group block"
+>
             <div className="bg-secondary rounded-xl sm:rounded-2xl overflow-hidden aspect-square mb-3">
               {image ? (
                 <img
@@ -755,7 +760,7 @@ onClick={() => changeVariant(i)}
                 {formatPrice(Number(item.price))}
               </span>
             </div>
-          </button>
+          </Link>
         );
       })}
     </div>
