@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Search } from 'lucide-react';
+import { useCart } from '../../context/CartContext';
 
 import { getImages, getFirstImage } from "../../utils/images";
 
@@ -14,6 +15,10 @@ const Shop = () => {
 
   const [imagesMap, setImagesMap] = useState({});
 const [imagesLoaded, setImagesLoaded] = useState(false);
+
+const { addToCart } = useCart();
+const [addingId, setAddingId] = useState(null);
+const [addedId, setAddedId] = useState(null);
 
   useEffect(() => {
     fetch(`${API_URL}/api/products`)
@@ -76,6 +81,62 @@ img: getFirstImage(imagesMap, product),
     item.color?.toLowerCase().includes(searchTerm.toLowerCase()) ||
     item.sku?.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  const handleAddToCart = (item) => {
+  const itemKey = item.uniqueKey || item.id;
+
+  // لو هو بالفعل بيضيف أو اتضاف، متعملش حاجة
+  if (addingId === itemKey || addedId === itemKey) return;
+
+  setAddingId(itemKey);
+  setAddedId(null);
+
+  // نحدد الـ variant
+  let selectedVariant;
+  let img = item.img;
+
+  if (filter === "all") {
+    // في حالة All Products → الـ variant موجود بالفعل
+    selectedVariant = {
+      id: item.variantId,
+      sku: item.sku,
+      color: { name: item.color },
+    };
+  } else {
+    // في حالة Collections → ناخد أول variant
+    selectedVariant = item.variants?.[0];
+  }
+
+  if (!selectedVariant) {
+    console.error("No variant found");
+    setAddingId(null);
+    return;
+  }
+
+  const cartItem = {
+    id: item.id,
+    variantId: selectedVariant.id,
+    name: item.name,
+    price: Number(item.price),
+    sku: selectedVariant.sku,
+    img: img,
+    color: selectedVariant.color?.name || item.color || "Default",
+    hexCode: selectedVariant.color?.hex_code || null,
+    quantity: 1,
+  };
+
+  // أنيميشن بسيطة
+  setTimeout(() => {
+    addToCart(cartItem);
+    setAddingId(null);
+    setAddedId(itemKey);
+
+    // يرجع بعد ثانيتين
+    setTimeout(() => {
+      setAddedId(null);
+    }, 2000);
+  }, 600);
+};
 
 if (loading || !imagesLoaded) {
   return (
@@ -196,6 +257,7 @@ if (loading || !imagesLoaded) {
                     <p className="text-gray-500 text-sm mt-1">One Size • Adjustable</p>
                   )}
 
+{/* Price + Stock */}
 <div className="mt-4 flex justify-between items-end">
   <div>
     <div className="flex items-center gap-2">
@@ -231,6 +293,53 @@ if (loading || !imagesLoaded) {
     </p>
   )}
 </div>
+
+{/* Strong Add to Cart Button */}
+{/* Strong Add to Cart Button */}
+<button
+  onClick={(e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    handleAddToCart(item);
+  }}
+  disabled={addingId === (item.uniqueKey || item.id) || addedId === (item.uniqueKey || item.id)}
+  className={`mt-4 w-full flex items-center justify-center gap-2 text-sm font-medium py-2.5 rounded-xl transition-all duration-200 shadow-sm
+    ${
+      addedId === (item.uniqueKey || item.id)
+        ? "bg-primary-dark text-white"
+        : addingId === (item.uniqueKey || item.id)
+        ? "bg-primary-80 text-white cursor-not-allowed"
+        : "bg-primary text-white hover:bg-primary-dark hover:scale-[1.02] active:scale-[0.98]"
+    }`}
+>
+  {addingId === (item.uniqueKey || item.id) ? (
+    <>
+      <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+      Adding...
+    </>
+  ) : addedId === (item.uniqueKey || item.id) ? (
+    "✓ Added"
+  ) : (
+    <>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <circle cx="8" cy="21" r="1" />
+        <circle cx="19" cy="21" r="1" />
+        <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12" />
+      </svg>
+      Add to Cart
+    </>
+  )}
+</button>
                 </div>
               </div>
             </Link>
